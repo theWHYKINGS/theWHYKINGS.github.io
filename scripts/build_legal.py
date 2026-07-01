@@ -27,9 +27,11 @@ wordmark_css = """
 
 style_block = f"<style>\n{legal_css}\n{wordmark_css}\n</style>"
 
+# Output paths match the links the Claude Design homepage footer points to
+# (legal/Impressum.html, legal/Datenschutz.html).
 pages = [
-    ("src/legal/Impressum.html", "impressum.html"),
-    ("src/legal/Datenschutz.html", "datenschutz.html"),
+    ("src/legal/Impressum.html", "legal/Impressum.html"),
+    ("src/legal/Datenschutz.html", "legal/Datenschutz.html"),
 ]
 
 for src, out in pages:
@@ -49,11 +51,11 @@ for src, out in pages:
     html = re.sub(r"<img[^>]*wordmark-gold[^>]*>",
                   '<span class="legal-wordmark">the WHYKINGS</span>', html)
 
-    # 5. fix links: homepage back-link, and cross-links to lowercase filenames
+    # 5. fix the homepage back-link -> site root. The Impressum<->Datenschutz
+    #    cross-links are siblings inside legal/, so they stay as-is.
     html = re.sub(r"\.\./theWHYKINGS(?:%20| )Homepage\.html", "/", html)
-    html = html.replace('href="Datenschutz.html"', 'href="datenschutz.html"')
-    html = html.replace('href="Impressum.html"', 'href="impressum.html"')
 
+    (root / out).parent.mkdir(parents=True, exist_ok=True)
     (root / out).write_text(html, encoding="utf-8")
 
     leftover = [p for p in ("_ds", "assets/", "data-omelette",

@@ -17,7 +17,7 @@
   // Web3Forms account inbox (dominik@thewhykings.com). Empty => mailto fallback.
   var WEB3FORMS_KEY = '86e85b45-d5c0-425c-ad02-0277510fd4b6';
 
-  var done = { legal: false, form: false };
+  var done = { form: false };
 
   function escapeHtml(s) {
     return String(s).replace(/[&<>"']/g, function (c) {
@@ -25,32 +25,9 @@
     });
   }
 
-  // ---- 1. Footer legal links ----
-  function enhanceLegal() {
-    if (done.legal) return;
-    var els = document.querySelectorAll('span, div, p, li, small');
-    for (var i = 0; i < els.length; i++) {
-      var el = els[i];
-      if (el.children.length) continue;
-      var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
-      if (t === 'Impressum · Datenschutz' || t === 'Impressum · Datenschutz') {
-        el.innerHTML =
-          '<a href="/impressum.html" class="wk-legal-link">Impressum</a>' +
-          ' · ' +
-          '<a href="/datenschutz.html" class="wk-legal-link">Datenschutz</a>';
-        el.querySelectorAll('a').forEach(function (a) {
-          a.style.color = 'inherit';
-          a.style.textDecoration = 'none';
-          a.addEventListener('mouseenter', function () { a.style.textDecoration = 'underline'; });
-          a.addEventListener('mouseleave', function () { a.style.textDecoration = 'none'; });
-        });
-        done.legal = true;
-        return;
-      }
-    }
-  }
-
-  // ---- 2. Contact form ----
+  // ---- Contact form ----
+  // (Footer Impressum/Datenschutz links are now native in the Design export,
+  //  pointing at legal/Impressum.html + legal/Datenschutz.html — no patching needed.)
   function readFields(form) {
     var v = { name: '', email: '', message: '' };
     form.querySelectorAll('input, textarea').forEach(function (f) {
@@ -127,14 +104,14 @@
     done.form = true;
   }
 
-  function run() { enhanceLegal(); enhanceForm(); }
+  function run() { enhanceForm(); }
 
   // The homepage renders client-side (React via Babel), so poll until the
-  // footer + form exist, then enhance. Stop once both are wired (or we give up).
+  // form exists, then wire it. Stop once wired (or we give up).
   var tries = 0;
   var iv = setInterval(function () {
     run();
-    if ((done.legal && done.form) || ++tries > 50) clearInterval(iv);
+    if (done.form || ++tries > 50) clearInterval(iv);
   }, 250);
   window.addEventListener('load', run);
 })();

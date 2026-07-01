@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+"""unpack_images.py — decode a wk_images.json bundle (pulled from Claude Design
+via the browser) into the repo's assets/ and uploads/ folders.
+
+The current Claude Design export references images by relative path instead of
+inlining them, so the referenced image files must be hosted alongside the HTML.
+Claude fetches them in the browser into a single JSON bundle (path -> base64);
+this script writes them to disk. Re-run whenever the image set changes.
+
+    python3 scripts/unpack_images.py [path/to/wk_images.json]
+    (defaults to ~/Downloads/wk_images.json)
+"""
+import base64
+import json
+import sys
+from pathlib import Path
+
+root = Path(__file__).resolve().parent.parent
+src = Path(sys.argv[1]) if len(sys.argv) > 1 else Path.home() / "Downloads" / "wk_images.json"
+
+data = json.loads(src.read_text(encoding="utf-8"))
+count = 0
+total = 0
+for rel, obj in data.items():
+    dest = (root / rel).resolve()
+    if root not in dest.parents:           # guard against path escapes
+        print(f"  ! skipped (outside repo): {rel}")
+        continue
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    raw = base64.b64decode(obj["content"])
+    dest.write_bytes(raw)
+    count += 1
+    total += len(raw)
+print(f"✓ wrote {count} image files ({total/1048576:.2f} MB) into assets/ + uploads/")
