@@ -12,7 +12,7 @@
   'use strict';
 
   // ==== Config ====
-  var CONTACT_EMAIL = 'info@thewhykings.com';
+  var CONTACT_EMAIL = 'dominik@thewhykings.com';
   // web3forms.com access key (public form-id) — delivers submissions to the
   // Web3Forms account inbox (dominik@thewhykings.com). Empty => mailto fallback.
   var WEB3FORMS_KEY = '86e85b45-d5c0-425c-ad02-0277510fd4b6';
