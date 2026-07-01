@@ -22,7 +22,14 @@ export PATH="$HOME/.local/bin:$PATH"   # local gh install
 
 MSG="${1:-Update site — $(date '+%Y-%m-%d %H:%M')}"
 
-if git diff --quiet && git diff --cached --quiet; then
+# --- post-process the fresh export before publishing ---
+# These run every deploy so enhancements survive each Claude Design pull.
+echo "Building legal pages…"
+python3 scripts/build_legal.py
+echo "Ensuring enhance.js is loaded by index.html…"
+python3 scripts/inject_enhance.py
+
+if [ -z "$(git status --porcelain)" ]; then
   echo "Nothing changed — working tree is clean. Nothing to deploy."
   exit 0
 fi
