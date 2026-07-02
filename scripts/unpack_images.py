@@ -16,7 +16,16 @@ import sys
 from pathlib import Path
 
 root = Path(__file__).resolve().parent.parent
-src = Path(sys.argv[1]) if len(sys.argv) > 1 else Path.home() / "Downloads" / "wk_images.json"
+
+# Default to the NEWEST wk_images*.json (Chrome appends "(1)", "(2)", … to
+# repeat downloads, so a fixed name would read a stale bundle).
+if len(sys.argv) > 1:
+    src = Path(sys.argv[1])
+else:
+    matches = sorted(Path.home().glob("Downloads/wk_images*.json"), key=lambda p: p.stat().st_mtime)
+    if not matches:
+        raise SystemExit("No wk_images*.json found in ~/Downloads")
+    src = matches[-1]
 
 data = json.loads(src.read_text(encoding="utf-8"))
 count = 0
