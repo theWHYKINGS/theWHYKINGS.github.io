@@ -7,6 +7,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>the WHYKINGS — Executive Sparring &amp; Leadership Coaching</title>
+<link rel="icon" type="image/png" href="assets/logos/helm-gold.png" />
+<link rel="apple-touch-icon" href="assets/logos/helm-gold.png" />
+<meta name="theme-color" content="#181818" />
 <link rel="stylesheet" href="_ds/thewhykings-design-system-57a77553-0890-4b89-bd34-5e9501453f1e/styles.css" />
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
@@ -19,10 +22,14 @@
   window.R = function (p) { return (window.__resources && window.__resources[p]) || p; };
 </script>
 <style>
-  html { scroll-behavior: smooth; }
-  body { margin: 0; background: var(--neutral-800); font-family: var(--font-body); }
+  html { scroll-behavior: smooth; overflow-x: hidden; }
+  body { margin: 0; background: var(--neutral-800); font-family: var(--font-body); overflow-wrap: break-word; }
   a { text-decoration: none; }
+  img { max-width: 100%; }
   image-slot { border-radius: inherit; }
+  /* Lange Komposita nicht über den Rand schieben */
+  .methodik-grid > div, .proof-metrics > div, .grid-3 > div, .tension-row > div { min-width: 0; }
+  .methodik-grid h3, .proof-metrics > div { hyphens: auto; }
 
   /* Mobile-Navigation */
   .twk-mobile-toggle { display: none; }
@@ -75,7 +82,7 @@
     .grid-2, .grid-3, .haltung-grid, .footer-grid { grid-template-columns: 1fr !important; }
     .grid-3 { gap: 16px !important; }
     .footer-grid { gap: 34px !important; }
-    .methodik-grid { grid-template-columns: 1fr 1fr !important; }
+    .methodik-grid { grid-template-columns: 1fr !important; }
     .proof-metrics { grid-template-columns: 1fr 1fr !important; gap: 32px 20px !important; }
     .tension-row { grid-template-columns: 1fr !important; gap: 4px !important; }
   }
