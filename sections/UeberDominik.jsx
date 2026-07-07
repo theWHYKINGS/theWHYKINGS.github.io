@@ -24,12 +24,12 @@ function UeberDominik({ acc }) {
               Meine Überzeugung: Die meisten Führungsprobleme sind keine Wissensprobleme. Sie sind Muster-, Rollen- und Verantwortungsthemen. Deshalb verbinde ich psychologische Tiefe mit der Realität von Organisationen — direkt, aber nie destruktiv.
             </p>
             <p style={{ margin: 0 }}>
-              Wenn ich vom <em style={{ fontStyle: 'normal', color: 'var(--color-fg)', fontWeight: 600 }}>Wir</em> spreche, ist das kein Marketing. Gute Führungsentwicklung ist kein Soloprojekt: Hinter the WHYKINGS steht ein Netzwerk erfahrener Menschen, das meine Arbeit schärft und professioneller macht. Die Verantwortung für die Beziehung zu unseren Mandant:innen bleibt bei mir.
+              Wenn ich im Kontext der the WHYKINGS vom <em style={{ fontStyle: 'normal', color: 'var(--color-fg)', fontWeight: 600 }}>Wir</em> spreche, ist das kein Marketing. Gute Führungsentwicklung ist kein Soloprojekt: Hinter the WHYKINGS steht ein Netzwerk erfahrener Menschen, das meine Arbeit schärft und professioneller macht. Die Verantwortung für die Beziehung zu unseren Mandant:innen bleibt bei mir.
             </p>
           </div>
 
           <blockquote style={{ margin: '32px 0 0', paddingLeft: 22, borderLeft: `3px solid ${acc.deep}`, fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(1.3rem,2vw,1.7rem)', lineHeight: 1.3, letterSpacing: '-0.01em', color: 'var(--color-fg)' }}>
-            „Klarheit ist keine Härte. Unklarheit ist die eigentliche Zumutung."
+            „Klarheit ist keine Härte. Unklarheit ist die eigentliche Zumutung. Deswegen bin ich immer härter an der Sache und weicher am Menschen."
           </blockquote>
         </div>
       </div>

@@ -102,7 +102,7 @@ function Proof({ acc }) {
         {/* Logos */}
         <div style={{ marginBottom: 48 }}>
           <div style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)', marginBottom: 24 }}>
-            Ein Auszug an Organisationen, mit deren Führungskräften wir gearbeitet haben
+            Ein Auszug an Organisationen, mit deren Führungskräften ich gearbeitet habe:
           </div>
           <div className="twk-logo-marquee">
             <div className="twk-logo-track">

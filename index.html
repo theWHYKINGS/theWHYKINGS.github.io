@@ -123,7 +123,7 @@
 <script type="text/babel" src="sections/Haltung.jsx"></script>
 <script type="text/babel" src="sections/Proof.jsx"></script>
 <script type="text/babel" src="sections/UeberDominik.jsx"></script>
-<script type="text/babel" src="sections/ThoughtLeadership.jsx"></script>
+<script type="text/babel" src="sections/FAQ.jsx"></script>
 <script type="text/babel" src="sections/FinalCTA.jsx"></script>
 <script type="text/babel" src="sections/Footer.jsx"></script>
 
@@ -159,7 +159,7 @@
     const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
     const acc = buildAccent(t.accent);
     const {
-      Header, Hero, Problem, Prinzipien, Angebote, Methodik, Haltung, Proof, UeberDominik, ThoughtLeadership, FinalCTA, Footer,
+      Header, Hero, Problem, Prinzipien, Angebote, Methodik, Haltung, Proof, UeberDominik, FAQ, FinalCTA, Footer,
     } = window;
 
     const onNav = (id) => {
@@ -178,7 +178,7 @@
         <Haltung acc={acc} />
         <Proof acc={acc} />
         <UeberDominik acc={acc} />
-        <ThoughtLeadership acc={acc} />
+        <FAQ acc={acc} />
         <FinalCTA acc={acc} />
         <Footer acc={acc} />
 

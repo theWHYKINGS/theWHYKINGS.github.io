@@ -1,17 +1,17 @@
 function Haltung({ acc }) {
   const da = [
-    ['Für den Menschen hinter der Führungsrolle', 'Nicht nur bessere Methoden, sondern die eigenen Muster, die Haltung, die blinden Flecken und die Wirkung.'],
-    ['Für ambitionierte Leader, die wirklich wachsen wollen', 'Keine Kosmetik. Menschen, die sich ehrlich hinterfragen und unbequeme Erkenntnisse nicht wegschieben.'],
-    ['Für Klarheit unter realem Druck', 'Wenn Entscheidungen komplex werden und einfache Antworten nicht mehr reichen: Klarheit, Tiefe und ehrliches Denken statt noch ein Framework.'],
-    ['Für Sparring auf Augenhöhe', 'Direkt, respektvoll und psychologisch fundiert. Fragen, die nicht immer bequem sind, aber weiterbringen.'],
-    ['Für Wachstum, das Konsequenzen hat', 'Kein inspirierender Impuls für einen guten Moment. Arbeit an Haltung, Verhalten und Führungspraxis.'],
+    ['Der Mensch hinter der Führungsrolle', 'Nicht nur bessere Methoden — die eigenen Muster, die Haltung, die blinden Flecken und ihre Wirkung.'],
+    ['Leader, die wirklich wachsen wollen', 'Keine Kosmetik. Menschen, die sich ehrlich hinterfragen und unbequeme Erkenntnisse nicht wegschieben.'],
+    ['Klarheit unter realem Druck', 'Wenn Entscheidungen komplex werden und einfache Antworten nicht mehr reichen: Tiefe und ehrliches Denken statt noch ein Framework.'],
+    ['Sparring auf Augenhöhe', 'Direkt, respektvoll und psychologisch fundiert. Fragen, die nicht immer bequem sind, aber weiterbringen.'],
+    ['Wachstum, das Konsequenzen hat', 'Kein inspirierender Impuls für einen guten Moment, sondern Arbeit an Haltung, Verhalten und Führungspraxis.'],
   ];
   const nicht = [
-    ['Nicht für Fassaden-Polieren', 'Keine Rollenspiele ohne Tiefe, keine Theorie an der Person vorbei, keine Optimierung der Außenwirkung, während innen alles beim Alten bleibt.'],
-    ['Nicht für Wohlfühl-Coaching ohne Konsequenz', 'Wertschätzung ja, Schonung nein. Wer nur Bestätigung sucht, wird hier nicht finden, was er sucht.'],
-    ['Nicht für Patentrezepte von der Stange', 'Führung ist kein 5-Schritte-Modell. Menschen, Teams und Organisationen funktionieren nicht nach Schablone.'],
-    ['Nicht für Theorie ohne Praxis oder Praxis ohne Tiefe', 'Weder Management-Sprech noch Dirty-Street-Romantik. Sondern psychologisches Verständnis, systemisches Denken und echte Führungspraxis.'],
-    ['Nicht für Guru-Gehabe', 'Keine Ratgeber-Pose, keine Abhängigkeit von meinem Rat, keine Ich-weiß-es-besser-Haltung. Sondern gemeinsame Arbeit an dem, was wirklich wirkt.'],
+    ['Fassaden polieren', 'Keine Rollenspiele ohne Tiefe, keine Theorie an der Person vorbei, keine Optimierung der Außenwirkung, während innen alles beim Alten bleibt.'],
+    ['Wohlfühl-Coaching ohne Konsequenz', 'Wertschätzung ja, Schonung nein. Wer nur Bestätigung sucht, ist hier falsch.'],
+    ['Patentrezepte von der Stange', 'Führung ist kein 5-Schritte-Modell. Menschen, Teams und Organisationen funktionieren nicht nach Schablone.'],
+    ['Theorie ohne Praxis, Praxis ohne Tiefe', 'Weder Management-Sprech noch Dirty-Street-Romantik. Sondern psychologisches Verständnis, systemisches Denken und echte Führungspraxis.'],
+    ['Guru-Gehabe', 'Keine Ratgeber-Pose, keine Abhängigkeit von meinem Rat, keine Ich-weiß-es-besser-Haltung. Sondern gemeinsame Arbeit an dem, was wirklich wirkt.'],
   ];
 
   const Check = ({ c }) => (
@@ -81,8 +81,8 @@ function Haltung({ acc }) {
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 28, alignItems: 'stretch' }} className="haltung-grid">
-          <Panel kind="da" eyebrow="Dafür da" title="Dafür ist the WHYKINGS da" items={da} />
-          <Panel kind="nicht" eyebrow="Dafür nicht" title="Dafür ist the WHYKINGS nicht da" items={nicht} />
+          <Panel kind="da" eyebrow="Worauf du dich einlässt" title="Wofür ich da bin" items={da} />
+          <Panel kind="nicht" eyebrow="Und worauf nicht" title="Wofür ich nicht zu haben bin" items={nicht} />
         </div>
       </div>
     </section>

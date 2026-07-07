@@ -30,7 +30,6 @@ function FinalCTA({ acc }) {
               </li>
             ))}
           </ul>
-          <Button variant="secondary" onClick={() => window.open('https://www.linkedin.com', '_blank')} style={{ color: '#fff', borderColor: 'rgba(255,255,255,0.28)', background: 'transparent' }}>LinkedIn ansehen</Button>
         </div>
 
         <Card variant="elevated" padding="lg">
