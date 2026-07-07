@@ -40,6 +40,18 @@ function CountUp({ value, color }) {
   );
 }
 
+function LogoTrack({ items, extraClass, h }) {
+  return (
+    <div className={'twk-logo-track' + (extraClass ? ' ' + extraClass : '')}>
+      {[...items, ...items].map((l, idx) => (
+        <div key={l.f + idx} aria-hidden={idx >= items.length} style={{ flex: '0 0 auto', height: h + 6, display: 'flex', alignItems: 'center' }}>
+          <img src={window.R('assets/marquee/' + l.f)} alt={l.n} title={l.n} style={{ maxHeight: h, width: 'auto', objectFit: 'contain', opacity: 0.72 }} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function Proof({ acc }) {
   const metrics = [
     ['14', 'Jahre in Führungskräfteentwicklung'],
@@ -58,23 +70,23 @@ function Proof({ acc }) {
     { q: 'Was Dominik von anderen unterscheidet: Er versteht die Dynamiken komplexer Matrixorganisationen — und stellt die richtigen Fragen, präzise, ohne Umwege, mit echtem Interesse am Ergebnis. Für C-Level in komplexen Organisationen ein Sparringspartner auf Augenhöhe.', name: 'Bianca Wannemacher', role: 'Chief Product Officer · RTL News', img: 'Bianca Wannemacher.jpeg' },
   ];
   const logos = [
-    { f: 'Bahn_Logo_weiß.png', n: 'Deutsche Bahn' },
-    { f: 'Roche_logo_weiß.png', n: 'Roche' },
-    { f: 'ProSiebenSat.1_Logo_weiß.png', n: 'ProSiebenSat.1' },
-    { f: 'RTL_logo_weiß.png', n: 'RTL' },
-    { f: '2025_Logo_stern.png', n: 'stern' },
-    { f: 'ntv_Logo_weiß.png', n: 'ntv' },
-    { f: 'Funke_Logo_weiß.png', n: 'FUNKE Mediengruppe' },
-    { f: '2025_Logo_ZDF.png', n: 'ZDF' },
-    { f: '2025_Logo_VHS.png', n: 'Volkshochschule' },
-    { f: 'LBBW_Logo_weiß.png', n: 'LBBW' },
-    { f: 'Uelzener_Logo_weiß.png', n: 'Uelzener Versicherungen' },
-    { f: 'Gema_Logo_weiß.png', n: 'GEMA' },
-    { f: 'TAXDOO_Logo_white.png', n: 'Taxdoo' },
-    { f: 'SmartAIs_Logo_weiß.png', n: 'SmartAIs' },
-    { f: 'Artisense_Logo_weiß.png', n: 'Artisense' },
-    { f: 'sport.de_Logo_weiß.png', n: 'sport.de' },
-    { f: 'wetter.de_Logo_weiß.png', n: 'wetter.de' },
+    { f: 'bahn.png', n: 'Deutsche Bahn' },
+    { f: 'roche.png', n: 'Roche' },
+    { f: 'prosiebensat1.png', n: 'ProSiebenSat.1' },
+    { f: 'rtl.png', n: 'RTL' },
+    { f: 'stern.png', n: 'stern' },
+    { f: 'ntv.png', n: 'ntv' },
+    { f: 'funke.png', n: 'FUNKE Mediengruppe' },
+    { f: 'zdf.png', n: 'ZDF' },
+    { f: 'vhs.png', n: 'Volkshochschule' },
+    { f: 'lbbw.png', n: 'LBBW' },
+    { f: 'uelzener.png', n: 'Uelzener Versicherungen' },
+    { f: 'gema.png', n: 'GEMA' },
+    { f: 'taxdoo.png', n: 'Taxdoo' },
+    { f: 'smartais.png', n: 'SmartAIs' },
+    { f: 'artisense.png', n: 'Artisense' },
+    { f: 'sportde.png', n: 'sport.de' },
+    { f: 'wetterde.png', n: 'wetter.de' },
   ];
   return (
     <section id="proof" data-screen-label="Proof" style={{ position: 'relative', padding: '120px 40px', background: 'var(--neutral-800)', color: '#fff', overflow: 'hidden' }}>
@@ -104,14 +116,12 @@ function Proof({ acc }) {
           <div style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)', marginBottom: 24 }}>
             Ein Auszug an Organisationen, mit deren Führungskräften ich gearbeitet habe:
           </div>
-          <div className="twk-logo-marquee">
-            <div className="twk-logo-track">
-              {[...logos, ...logos].map((l, idx) => (
-                <div key={l.f + idx} aria-hidden={idx >= logos.length} style={{ flex: '0 0 auto', height: 40, display: 'flex', alignItems: 'center' }}>
-                  <img src={window.R('uploads/' + l.f)} alt={l.n} title={l.n} style={{ maxHeight: 34, width: 'auto', objectFit: 'contain', opacity: 0.72 }} />
-                </div>
-              ))}
-            </div>
+          <div className="twk-logo-marquee twk-logo-desktop">
+            <LogoTrack items={logos} h={34} />
+          </div>
+          <div className="twk-logo-marquee twk-logo-mobile">
+            <LogoTrack items={logos.slice(0, 9)} h={28} />
+            <LogoTrack items={logos.slice(9)} extraClass="twk-logo-track-b" h={28} />
           </div>
         </div>
 

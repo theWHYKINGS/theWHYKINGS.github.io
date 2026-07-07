@@ -92,7 +92,13 @@
   .twk-logo-track { display: flex; align-items: center; gap: 40px; width: max-content; animation: twk-marquee 26s linear infinite; will-change: transform; transform: translateZ(0); backface-visibility: hidden; -webkit-backface-visibility: hidden; }
   .twk-logo-track img { -webkit-transform: translateZ(0); transform: translateZ(0); }
   .twk-logo-marquee, .twk-logo-track { pointer-events: none; }
-  @media (max-width: 720px) { .twk-logo-track { animation-duration: 16s; } }
+  .twk-logo-mobile { display: none; }
+  @media (max-width: 720px) {
+    .twk-logo-desktop { display: none; }
+    .twk-logo-mobile { display: flex; flex-direction: column; gap: 14px; }
+    .twk-logo-track { gap: 30px; animation-duration: 15s; }
+    .twk-logo-track-b { animation-duration: 18.5s; }
+  }
   @media (prefers-reduced-motion: reduce) { .twk-logo-track { animation: none; } }
 
   .twk-svc-card { transition: transform var(--dur-base) var(--ease-standard), box-shadow var(--dur-base) var(--ease-standard); }
