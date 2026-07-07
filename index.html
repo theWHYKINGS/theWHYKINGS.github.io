@@ -89,9 +89,10 @@
 
   @keyframes twk-marquee { from { transform: translate3d(0,0,0); } to { transform: translate3d(-50%,0,0); } }
   .twk-logo-marquee { overflow: hidden; -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent); mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent); }
-  .twk-logo-track { display: flex; align-items: center; gap: 40px; width: max-content; animation: twk-marquee 40.5s linear infinite; will-change: transform; transform: translateZ(0); backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+  .twk-logo-track { display: flex; align-items: center; gap: 40px; width: max-content; animation: twk-marquee 26s linear infinite; will-change: transform; transform: translateZ(0); backface-visibility: hidden; -webkit-backface-visibility: hidden; }
   .twk-logo-track img { -webkit-transform: translateZ(0); transform: translateZ(0); }
-  .twk-logo-marquee:hover .twk-logo-track { animation-play-state: paused; }
+  .twk-logo-marquee, .twk-logo-track { pointer-events: none; }
+  @media (max-width: 720px) { .twk-logo-track { animation-duration: 16s; } }
   @media (prefers-reduced-motion: reduce) { .twk-logo-track { animation: none; } }
 
   .twk-svc-card { transition: transform var(--dur-base) var(--ease-standard), box-shadow var(--dur-base) var(--ease-standard); }
