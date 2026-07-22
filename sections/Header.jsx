@@ -19,7 +19,7 @@ function Header({ onNav, acc }) {
       <a href="#top" onClick={(e) => { e.preventDefault(); go('top'); }}
          style={{ display: 'flex', alignItems: 'center', gap: 11 }}>
         <img src={acc.helm} alt="the WHYKINGS" style={{ height: 30 }} />
-        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 17, letterSpacing: '0.01em', textTransform: 'uppercase', color: '#fff' }}>
+        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 17, letterSpacing: '0.01em', color: '#fff' }}>
           the WHYKINGS
         </span>
       </a>
