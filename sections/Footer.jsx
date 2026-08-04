@@ -1,7 +1,11 @@
 function Footer({ acc }) {
+  const S = window.SITE || {};
+  const sub = S.page === 'sparring';
+  const home = S.home || 'index.html';
+  const legalBase = S.legal || 'legal/';
   const cols = [
     ['Navigation', [['Das Problem', 'problem'], ['Haltung', 'prinzipien'], ['Angebote', 'angebote'], ['Methodik', 'methodik'], ['Über mich', 'ueber']]],
-    ['Angebote', [['Leadership Sparring 1:1', 'angebote'], ['Leadership Trainings', 'angebote'], ['Leadership Boot Camp', 'angebote']]],
+    ['Angebote', [['Leadership Sparring 1:1', 'angebote', sub ? '#top' : (S.sparring || null)], ['Leadership Trainings', 'angebote'], ['Leadership Boot Camp', 'angebote']]],
   ];
   const iconWrap = { flexShrink: 0, width: 18, height: 18, display: 'block' };
   const PlaneIcon = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={iconWrap}><path d="M22 2 11 13" /><path d="M22 2 15 22 11 13 2 9 22 2Z" /></svg>);
@@ -24,12 +28,18 @@ function Footer({ acc }) {
           <div key={h}>
             <div style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: acc.main, marginBottom: 14 }}>{h}</div>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {links.map(([l, id]) => (
-                <li key={l}>
-                  <a href={`#${id}`} onClick={(e) => { e.preventDefault(); const el = document.getElementById(id); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); }}
-                     style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>{l}</a>
-                </li>
-              ))}
+              {links.map(([l, id, override]) => {
+                const href = override || (sub ? home + '#' + id : `#${id}`);
+                const onClick = (e) => {
+                  if (override === '#top') { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+                  else if (!override && !sub) { e.preventDefault(); const el = document.getElementById(id); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); }
+                };
+                return (
+                  <li key={l}>
+                    <a href={href} onClick={onClick} style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>{l}</a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         ))}
@@ -55,8 +65,8 @@ function Footer({ acc }) {
       <div style={{ maxWidth: 'var(--container-lg)', margin: '40px auto 0', paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, fontSize: 13, color: 'rgba(255,255,255,0.5)' }}>
         <span>© 2026 the WHYKINGS · Dominik Haselbauer</span>
         <span style={{ display: 'flex', gap: 18 }}>
-          <a href="legal/Impressum.html" style={{ color: 'rgba(255,255,255,0.5)' }}>Impressum</a>
-          <a href="legal/Datenschutz.html" style={{ color: 'rgba(255,255,255,0.5)' }}>Datenschutz</a>
+          <a href={legalBase + 'Impressum.html'} style={{ color: 'rgba(255,255,255,0.5)' }}>Impressum</a>
+          <a href={legalBase + 'Datenschutz.html'} style={{ color: 'rgba(255,255,255,0.5)' }}>Datenschutz</a>
         </span>
       </div>
     </footer>

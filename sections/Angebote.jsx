@@ -6,7 +6,7 @@ function Angebote({ acc }) {
   };
   const items = [
     {
-      n: '01', tail: 'Leadership Sparring 1:1', color: 'var(--color-gold)', icon: 'helm',
+      n: '01', tail: 'Leadership Sparring 1:1', color: 'var(--color-gold)', icon: 'helm', link: (window.SITE && window.SITE.sparring) || null,
       claim: 'Dein Spiegel. Dein Sparringspartner.',
       d: 'Vertrauliche 1:1-Begleitung für Geschäftsführer:innen und Senior Leader, die unter Druck klar entscheiden müssen.',
     },
@@ -48,10 +48,16 @@ function Angebote({ acc }) {
                 <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 18, color: '#fff', letterSpacing: '-0.01em', marginBottom: 11 }}>{s.claim}</div>
                 <p style={{ margin: 0, color: 'rgba(255,255,255,0.62)', fontSize: 14.5, lineHeight: 1.55 }}>{s.d}</p>
               </div>
-              <button onClick={() => { if (s.href) { window.open(s.href, '_blank', 'noopener'); } else { goTo('kontakt'); } }} className="twk-svc-cta" style={{ border: 'none', cursor: 'pointer', background: s.color, color: '#fff', fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: 15, padding: '15px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                <span>Mehr erfahren</span>
-                <span className="twk-svc-arrow" style={{ fontSize: 18, transition: 'transform var(--dur-base) var(--ease-standard)' }}>→</span>
-              </button>
+              {(() => {
+                const to = s.href || s.link;
+                const ctaStyle = { border: 'none', cursor: 'pointer', background: s.color, color: '#fff', fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: 15, padding: '15px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', boxSizing: 'border-box', textDecoration: 'none' };
+                const inner = <React.Fragment><span>Mehr erfahren</span><span className="twk-svc-arrow" style={{ fontSize: 18, transition: 'transform var(--dur-base) var(--ease-standard)' }}>→</span></React.Fragment>;
+                return to ? (
+                  <a className="twk-svc-cta" href={to} target={s.href ? '_blank' : undefined} rel={s.href ? 'noopener noreferrer' : undefined} aria-label={'Mehr erfahren: ' + s.tail} style={ctaStyle}>{inner}</a>
+                ) : (
+                  <button onClick={() => goTo('kontakt')} className="twk-svc-cta" aria-label={'Mehr erfahren: ' + s.tail} style={ctaStyle}>{inner}</button>
+                );
+              })()}
             </div>
           ))}
         </div>

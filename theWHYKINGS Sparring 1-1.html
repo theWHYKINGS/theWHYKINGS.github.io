@@ -6,7 +6,16 @@
 
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>the WHYKINGS — Executive Sparring &amp; Leadership Coaching</title>
+<title>Leadership Sparring 1:1 in München und online | the WHYKINGS</title>
+<meta name="description" content="Vertrauliches Leadership Sparring für Geschäftsführer:innen und Senior Leader. Vier Sessions pro Monat, online oder in München." />
+<link rel="canonical" href="https://www.thewhykings.com/sparring-1-1" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.thewhykings.com/sparring-1-1" />
+<meta property="og:title" content="Leadership Sparring 1:1 in München und online | the WHYKINGS" />
+<meta property="og:description" content="Vertrauliches Leadership Sparring für Geschäftsführer:innen und Senior Leader. Vier Sessions pro Monat, online oder in München." />
+<meta property="og:image" content="https://www.thewhykings.com/uploads/427A3354.jpg" />
+<meta property="og:locale" content="de_DE" />
+<meta name="twitter:card" content="summary_large_image" />
 <link rel="icon" type="image/png" sizes="32x32" href="assets/logos/favicon-32.png" />
 <link rel="icon" type="image/png" sizes="64x64" href="assets/logos/favicon-64.png" />
 <link rel="apple-touch-icon" href="assets/logos/apple-touch-icon.png" />
@@ -16,24 +25,48 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="_ds/thewhykings-design-system-57a77553-0890-4b89-bd34-5e9501453f1e/_ds_bundle.js"></script>
-<script src="image-slot.js"></script>
 <script>
-  // Resolves an asset path to its inlined blob URL when bundled (standalone export),
-  // and falls back to the raw path otherwise. Keeps source + standalone in sync.
   window.R = function (p) { return (window.__resources && window.__resources[p]) || p; };
-  window.SITE = { page: 'home', home: 'theWHYKINGS Homepage.html', sparring: 'theWHYKINGS Sparring 1-1.html', legal: 'legal/' };
+  window.SITE = { page: 'sparring', home: 'theWHYKINGS Homepage.html', sparring: '#top', legal: 'legal/' };
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Leadership Sparring 1:1",
+  "serviceType": "Leadership Sparring / Executive Coaching",
+  "description": "Vertrauliches Leadership Sparring für Geschäftsführer:innen und Senior Leader. Vier Sessions à 60 Minuten pro Vertragsmonat, online oder in München. Initialmandat über drei Monate.",
+  "url": "https://www.thewhykings.com/sparring-1-1",
+  "inLanguage": "de",
+  "provider": {
+    "@type": "ProfessionalService",
+    "name": "the WHYKINGS",
+    "url": "https://www.thewhykings.com/",
+    "founder": { "@type": "Person", "name": "Dominik Haselbauer" },
+    "address": { "@type": "PostalAddress", "streetAddress": "Schleißheimer Str. 42", "postalCode": "80333", "addressLocality": "München", "addressCountry": "DE" }
+  },
+  "areaServed": "DE",
+  "offers": [
+    { "@type": "Offer", "name": "Unternehmensmandat (B2B)", "price": "2000", "priceCurrency": "EUR", "priceSpecification": { "@type": "UnitPriceSpecification", "price": "2000", "priceCurrency": "EUR", "valueAddedTaxIncluded": false, "unitText": "Vertragsmonat" } },
+    { "@type": "Offer", "name": "Selbstzahler:innen-Mandat (B2C)", "price": "2100", "priceCurrency": "EUR", "priceSpecification": { "@type": "UnitPriceSpecification", "price": "2100", "priceCurrency": "EUR", "valueAddedTaxIncluded": true, "unitText": "Vertragsmonat" } }
+  ]
+}
 </script>
 <style>
   html { scroll-behavior: smooth; overflow-x: hidden; }
   body { margin: 0; background: var(--neutral-800); font-family: var(--font-body); overflow-wrap: break-word; }
-  a { text-decoration: none; }
+  a { text-decoration: none; color: var(--gold-600); }
+  a:hover { color: var(--gold-500); }
   img { max-width: 100%; }
-  image-slot { border-radius: inherit; }
-  /* Lange Komposita nicht über den Rand schieben */
-  .methodik-grid > div, .proof-metrics > div, .grid-3 > div, .tension-row > div { min-width: 0; }
-  .methodik-grid h3, .proof-metrics > div { hyphens: auto; }
+  .sp-skip { position: absolute; left: -9999px; top: 0; z-index: 100; background: var(--color-gold); color: #fff; padding: 12px 18px; border-radius: 0 0 var(--radius-md) 0; font-family: var(--font-body); font-weight: 600; }
+  .sp-skip:focus { left: 0; }
+  .sp-cases > div, .sp-cards-4 > div, .sp-steps > div, .sp-growth-grid > div, .sp-price-grid > div, .sp-panels > div, .sp-grid-2 > div, .sp-grid-3 > div, .sp-metrics > div, .sp-facts > div { min-width: 0; }
+  .sp-facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .sp-arrow-v { display: none; }
+  .sp-card { transition: transform var(--dur-base) var(--ease-standard), box-shadow var(--dur-base) var(--ease-standard); }
+  .sp-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
 
-  /* Mobile-Navigation */
+  /* Mobile-Navigation (identisch zur Startseite) */
   .twk-mobile-toggle { display: none; }
   .twk-burger, .twk-burger::before, .twk-burger::after {
     content: ''; display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px;
@@ -47,6 +80,9 @@
   .twk-burger[data-open="true"]::after { transform: translateY(-7px) rotate(-45deg); }
   .twk-mobile-menu { display: none; }
 
+  @media (max-width: 1024px) {
+    .sp-cards-4 { grid-template-columns: 1fr 1fr !important; }
+  }
   @media (max-width: 980px) {
     .twk-header { padding-left: 26px !important; padding-right: 26px !important; }
     .twk-desktop-nav { display: none !important; }
@@ -62,50 +98,47 @@
       transition: opacity .2s var(--ease-standard), transform .2s var(--ease-standard), visibility .2s;
     }
     .twk-mobile-menu[data-open="true"] { transform: translateY(0); opacity: 1; pointer-events: auto; visibility: visible; }
-
     .hero-grid { grid-template-columns: 1fr !important; gap: 4px !important; padding-left: 26px !important; padding-right: 26px !important; }
     .hero-portrait-col { min-height: 300px !important; order: -1; }
     .hero-portrait-col > div { margin: 20px 0 0 !important; }
-    .hero-text { padding: 36px 0 64px !important; }
-    .ueber-grid, .finalcta-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
-    .methodik-grid { grid-template-columns: 1fr 1fr !important; }
-    .grid-3 { grid-template-columns: 1fr 1fr !important; }
-    .haltung-grid { grid-template-columns: 1fr !important; gap: 20px !important; }
-    .footer-grid { grid-template-columns: 1.4fr 1fr 1fr !important; gap: 28px 24px !important; }
-    .principle-row { grid-template-columns: 52px 1fr !important; row-gap: 4px !important; }
-    .principle-row h3 { grid-column: 2 !important; }
-    .principle-row p { grid-column: 2 !important; }
+    .hero-text { padding: 36px 0 56px !important; }
+    .sp-facts { grid-template-columns: 1fr 1fr; gap: 22px 0; padding-left: 26px !important; padding-right: 26px !important; }
+    .sp-fact:nth-child(odd) { border-left: none !important; padding-left: 0 !important; }
+    .sp-fact:nth-child(even) { padding-left: 22px !important; }
+    .sp-steps { grid-template-columns: 1fr 1fr !important; gap: 34px 28px !important; }
+    .sp-step-line { display: none !important; }
+    .sp-growth-grid { grid-template-columns: 1fr 1fr !important; }
+    .sp-panels { grid-template-columns: 1fr !important; gap: 20px !important; }
+    .sp-cta-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+    .sp-grid-3 { grid-template-columns: 1fr 1fr !important; }
+    .sp-cases { grid-template-columns: 1fr !important; }
   }
-  @media (max-width: 600px) {
+  @media (max-width: 860px) {
+    .sp-price-grid { grid-template-columns: 1fr !important; }
+    .sp-contract { grid-template-columns: 1fr !important; }
+    .sp-contract-cell { border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.10); }
+    .sp-grid-2 { grid-template-columns: 1fr !important; }
+  }
+  @media (max-width: 640px) {
     section:not(#top) { padding-left: 22px !important; padding-right: 22px !important; padding-top: 72px !important; padding-bottom: 72px !important; }
     .twk-header { padding-left: 22px !important; padding-right: 22px !important; }
     .twk-mobile-menu { padding-left: 22px !important; padding-right: 22px !important; }
     .hero-grid { padding-left: 22px !important; padding-right: 22px !important; }
-    .grid-2, .grid-3, .haltung-grid, .footer-grid { grid-template-columns: 1fr !important; }
-    .grid-3 { gap: 16px !important; }
-    .footer-grid { gap: 34px !important; }
-    .methodik-grid { grid-template-columns: 1fr !important; }
-    .proof-metrics { grid-template-columns: 1fr 1fr !important; gap: 32px 20px !important; }
-    .tension-row { grid-template-columns: 1fr !important; gap: 4px !important; }
+    .sp-facts { padding-left: 22px !important; padding-right: 22px !important; }
+    .sp-steps, .sp-growth-grid, .sp-cards-4, .sp-grid-3 { grid-template-columns: 1fr !important; }
+    .sp-metrics { grid-template-columns: 1fr 1fr !important; gap: 28px 20px !important; }
+    .sp-loop { flex-direction: column; align-items: stretch !important; gap: 8px !important; }
+    .sp-loop .sp-arrow-h { display: none; }
+    .sp-loop .sp-arrow-v { display: block; text-align: center; }
+    .footer-grid { grid-template-columns: 1fr !important; gap: 34px !important; }
   }
-
-  @keyframes twk-marquee { from { transform: translate3d(0,0,0); } to { transform: translate3d(-50%,0,0); } }
-  .twk-logo-marquee { overflow: hidden; -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent); mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent); }
-  .twk-logo-track { display: flex; align-items: center; gap: 40px; width: max-content; animation: twk-marquee 26s linear infinite; will-change: transform; transform: translateZ(0); backface-visibility: hidden; -webkit-backface-visibility: hidden; }
-  .twk-logo-track img { -webkit-transform: translateZ(0); transform: translateZ(0); }
-  .twk-logo-marquee, .twk-logo-track { pointer-events: none; }
-  .twk-logo-mobile { display: none; }
-  @media (max-width: 720px) {
-    .twk-logo-desktop { display: none; }
-    .twk-logo-mobile { display: flex; flex-direction: column; gap: 14px; }
-    .twk-logo-track { gap: 30px; animation-duration: 15s; }
-    .twk-logo-track-b { animation-duration: 18.5s; }
+  @media (min-width: 641px) and (max-width: 980px) {
+    .footer-grid { grid-template-columns: 1.4fr 1fr 1fr !important; gap: 28px 24px !important; }
   }
-  @media (prefers-reduced-motion: reduce) { .twk-logo-track { animation: none; } }
-
-  .twk-svc-card { transition: transform var(--dur-base) var(--ease-standard), box-shadow var(--dur-base) var(--ease-standard); }
-  .twk-svc-card:hover { transform: translateY(-4px); box-shadow: 0 18px 48px rgba(0,0,0,0.22); }
-  .twk-svc-card:hover .twk-svc-arrow { transform: translateX(4px); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .sp-card, .twk-svc-card { transition: none; }
+  }
 </style>
 </head>
 <body>
@@ -113,100 +146,70 @@
   <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
     <rect width="1200" height="800" fill="#181818"></rect>
     <path d="M470 480 A130 130 0 0 1 730 480" fill="none" stroke="#b79f63" stroke-width="34" stroke-linecap="round"></path>
-    <text x="600" y="600" text-anchor="middle" font-family="Jost, sans-serif" font-weight="700" font-size="72" letter-spacing="6" fill="#ffffff">THE WHYKINGS</text>
+    <text x="600" y="600" text-anchor="middle" font-family="Jost, sans-serif" font-weight="700" font-size="60" letter-spacing="4" fill="#ffffff">SPARRING 1:1</text>
   </svg>
 </template>
+<a class="sp-skip" href="#main">Zum Inhalt springen</a>
 <div id="root"></div>
 
-<script type="text/babel" src="tweaks-panel.jsx"></script>
 <script type="text/babel">
-  const { Button, Card, Badge, Input, Avatar, Switch } = window.TheWHYKINGSDesignSystem_57a775;
+  const { Button, Card, Badge, Input, Avatar } = window.TheWHYKINGSDesignSystem_57a775;
   window.Button = Button; window.Card = Card; window.Badge = Badge; window.Input = Input; window.Avatar = Avatar;
 </script>
-<script type="text/babel" src="sections/Header.jsx"></script>
-<script type="text/babel" src="sections/Hero.jsx"></script>
-<script type="text/babel" src="sections/Problem.jsx"></script>
-<script type="text/babel" src="sections/Prinzipien.jsx"></script>
-<script type="text/babel" src="sections/Angebote.jsx"></script>
-<script type="text/babel" src="sections/Methodik.jsx"></script>
-<script type="text/babel" src="sections/Haltung.jsx"></script>
-<script type="text/babel" src="sections/Proof.jsx"></script>
-<script type="text/babel" src="sections/UeberDominik.jsx"></script>
-<script type="text/babel" src="sections/FAQ.jsx"></script>
-<script type="text/babel" src="sections/FinalCTA.jsx"></script>
+<script type="text/babel" src="sections/sparring/SpHeader.jsx"></script>
+<script type="text/babel" src="sections/sparring/SpHero.jsx"></script>
+<script type="text/babel" src="sections/sparring/SpSituation.jsx"></script>
+<script type="text/babel" src="sections/sparring/SpMandat.jsx"></script>
+<script type="text/babel" src="sections/sparring/SpWeg.jsx"></script>
+<script type="text/babel" src="sections/sparring/SpRhythmus.jsx"></script>
+<script type="text/babel" src="sections/sparring/SpGrowth.jsx"></script>
+<script type="text/babel" src="sections/sparring/SpDreiMonate.jsx"></script>
+<script type="text/babel" src="sections/sparring/SpVertrauen.jsx"></script>
+<script type="text/babel" src="sections/sparring/SpPassung.jsx"></script>
+<script type="text/babel" src="sections/sparring/SpProof.jsx"></script>
+<script type="text/babel" src="sections/sparring/SpHonorar.jsx"></script>
+<script type="text/babel" src="sections/sparring/SpFAQ.jsx"></script>
+<script type="text/babel" src="sections/sparring/SpCTA.jsx"></script>
 <script type="text/babel" src="sections/Footer.jsx"></script>
 
 <script type="text/babel">
-  const { useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakToggle } = window;
-
-  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-    "heroHeadline": "Klarheit",
-    "accent": "Gold",
-    "helm": true
-  }/*EDITMODE-END*/;
-
-  function buildAccent(name) {
-    if (name === 'Sage') {
-      return {
-        main: 'var(--color-accent)', deep: 'var(--sage-600)', soft: 'var(--sage-50)',
-        btn: 'primary', badge: 'sage',
-        helm: window.R('assets/logos/helm-green.png'),
-        helmWatermark: window.R('assets/logos/helm-green.png'),
-        helmWhite: window.R('assets/logos/helm-white.png'),
-      };
-    }
-    return {
-      main: 'var(--color-gold)', deep: 'var(--gold-600)', soft: 'var(--gold-50)',
-      btn: 'gold', badge: 'gold',
-      helm: window.R('assets/logos/helm-gold.png'),
-      helmWatermark: window.R('assets/logos/helm-gold.png'),
-      helmWhite: window.R('assets/logos/helm-white.png'),
-    };
-  }
-
+  const ACC = {
+    main: 'var(--color-gold)', deep: 'var(--gold-600)', soft: 'var(--gold-50)',
+    btn: 'gold', badge: 'gold',
+    helm: window.R('assets/logos/helm-gold.png'),
+    helmWatermark: window.R('assets/logos/helm-gold.png'),
+    helmWhite: window.R('assets/logos/helm-white.png'),
+  };
   function App() {
-    const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
-    const acc = buildAccent(t.accent);
-    const {
-      Header, Hero, Problem, Prinzipien, Angebote, Methodik, Haltung, Proof, UeberDominik, FAQ, FinalCTA, Footer,
-    } = window;
-
+    const { SpHeader, SpHero, SpSituation, SpMandat, SpWeg, SpRhythmus, SpGrowth, SpDreiMonate, SpVertrauen, SpPassung, SpProof, SpHonorar, SpFAQ, SpCTA, Footer } = window;
     const onNav = (id) => {
-      const el = document.getElementById(id === 'top' ? 'top' : id);
-      if (el) window.scrollTo({ top: id === 'top' ? 0 : el.offsetTop - 64, behavior: 'smooth' });
+      const el = document.getElementById(id);
+      if (!el) return;
+      const rm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: id === 'top' ? 0 : el.offsetTop - 64, behavior: rm ? 'auto' : 'smooth' });
     };
-
     return (
       <React.Fragment>
-        <Header onNav={onNav} acc={acc} />
-        <Hero onNav={onNav} t={t} acc={acc} />
-        <Problem acc={acc} />
-        <Prinzipien acc={acc} />
-        <Angebote acc={acc} />
-        <Methodik acc={acc} />
-        <Haltung acc={acc} />
-        <Proof acc={acc} />
-        <UeberDominik acc={acc} />
-        <FAQ acc={acc} />
-        <FinalCTA acc={acc} />
-        <Footer acc={acc} />
-
-        <TweaksPanel>
-          <TweakSection label="Hero" />
-          <TweakRadio label="Headline" value={t.heroHeadline}
-                      options={['Klarheit', 'Muster', 'Zumutung']}
-                      onChange={(v) => setTweak('heroHeadline', v)} />
-          <TweakSection label="Marke" />
-          <TweakRadio label="Akzentfarbe" value={t.accent}
-                      options={['Gold', 'Sage']}
-                      onChange={(v) => setTweak('accent', v)} />
-          <TweakToggle label="Helm-Wasserzeichen" value={t.helm}
-                       onChange={(v) => setTweak('helm', v)} />
-        </TweaksPanel>
+        <SpHeader onNav={onNav} acc={ACC} />
+        <main id="main">
+          <SpHero onNav={onNav} acc={ACC} />
+          <SpSituation acc={ACC} />
+          <SpMandat acc={ACC} />
+          <SpWeg acc={ACC} />
+          <SpRhythmus acc={ACC} />
+          <SpGrowth acc={ACC} />
+          <SpDreiMonate acc={ACC} />
+          <SpVertrauen acc={ACC} />
+          <SpPassung acc={ACC} />
+          <SpProof acc={ACC} />
+          <SpHonorar acc={ACC} onNav={onNav} />
+          <SpFAQ acc={ACC} />
+          <SpCTA acc={ACC} />
+        </main>
+        <Footer acc={ACC} />
       </React.Fragment>
     );
   }
-
   ReactDOM.createRoot(document.getElementById('root')).render(<App />);
 </script>
   <script defer src="enhance.js"></script>

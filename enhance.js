@@ -1,20 +1,18 @@
 /*
- * enhance.js — progressive enhancements layered on top of the Claude Design
- * export (which is regenerated on every deploy, so we enhance at runtime):
- *   1. Footer "Impressum · Datenschutz" text -> real links to the legal pages.
- *   2. Contact form -> actually submits (Web3Forms inbox delivery, or a
- *      mailto: fallback when no key is configured).
+ * enhance.js — progressive enhancement layered on the Claude Design export
+ * (regenerated every deploy, so we enhance at runtime). It wires the contact
+ * form(s) on the homepage and the Sparring sub-page to actually submit
+ * (Web3Forms inbox delivery, mailto: fallback). It collects EVERY form field
+ * generically, so richer forms (mandate type, location, …) come through too.
  *
- * The deploy pipeline re-injects <script src="enhance.js"> into index.html
- * after each pull, so this keeps working across design updates.
+ * Re-injected into each app page on every deploy by scripts/inject_enhance.py.
  */
 (function () {
   'use strict';
 
   // ==== Config ====
   var CONTACT_EMAIL = 'dominik@thewhykings.com';
-  // web3forms.com access key (public form-id) — delivers submissions to the
-  // Web3Forms account inbox (dominik@thewhykings.com). Empty => mailto fallback.
+  // web3forms.com access key (public form-id) — delivers to the Web3Forms inbox.
   var WEB3FORMS_KEY = '86e85b45-d5c0-425c-ad02-0277510fd4b6';
 
   var done = { form: false };
@@ -25,33 +23,56 @@
     });
   }
 
-  // ---- Contact form ----
-  // (Footer Impressum/Datenschutz links are now native in the Design export,
-  //  pointing at legal/Impressum.html + legal/Datenschutz.html — no patching needed.)
-  function readFields(form) {
-    var v = { name: '', email: '', message: '' };
-    form.querySelectorAll('input, textarea').forEach(function (f) {
-      if (f.tagName === 'TEXTAREA') v.message = f.value;
-      else if (f.type === 'email') v.email = f.value;
-      else if (!v.name) v.name = f.value;
+  function slugify(s) {
+    return String(s || '').toLowerCase()
+      .replace(/[äöü]/g, function (c) { return { 'ä': 'ae', 'ö': 'oe', 'ü': 'ue' }[c]; })
+      .replace(/ß/g, 'ss')
+      .replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '').slice(0, 40);
+  }
+
+  // Give every unnamed field a usable name (email/textarea specialised, others
+  // slugged from placeholder/aria-label). Fields the design already named
+  // (e.g. radio groups "mandat"/"ort") are left untouched.
+  function nameFields(form) {
+    form.querySelectorAll('input, textarea, select').forEach(function (f, i) {
+      if (f.name) return;
+      if (f.type === 'email') { f.name = 'email'; return; }
+      if (f.tagName === 'TEXTAREA') { f.name = 'nachricht'; return; }
+      var slug = slugify(f.placeholder || f.getAttribute('aria-label') || '');
+      f.name = slug || ('feld_' + (i + 1));
     });
-    return v;
   }
 
-  function mailtoFallback(v) {
-    var subject = 'Strategiegespräch-Anfrage über thewhykings.com';
-    var body = 'Name: ' + v.name + '\nE-Mail: ' + v.email + '\n\n' + v.message;
+  // Collect all named fields into a flat object (radios/checkboxes: checked only).
+  function collect(form) {
+    var data = {};
+    form.querySelectorAll('input, textarea, select').forEach(function (f) {
+      if (!f.name) return;
+      if ((f.type === 'radio' || f.type === 'checkbox') && !f.checked) return;
+      if (f.value !== '') data[f.name] = f.value;
+    });
+    return data;
+  }
+
+  function guessName(data) {
+    for (var k in data) if (/name/.test(k) && !/firm|company|unternehmen/.test(k)) return data[k];
+    return '';
+  }
+
+  function mailtoFallback(data) {
+    var lines = [];
+    for (var k in data) lines.push(k + ': ' + data[k]);
     window.location.href = 'mailto:' + CONTACT_EMAIL +
-      '?subject=' + encodeURIComponent(subject) +
-      '&body=' + encodeURIComponent(body);
+      '?subject=' + encodeURIComponent('Anfrage über thewhykings.com') +
+      '&body=' + encodeURIComponent(lines.join('\n'));
   }
 
-  function showThanks(form, v) {
+  function showThanks(form, firstName) {
     var box = document.createElement('div');
     box.setAttribute('role', 'status');
     box.style.cssText = 'padding:24px 26px;border-radius:14px;background:rgba(183,159,99,.12);' +
       'border:1px solid rgba(183,159,99,.45);color:inherit;font-size:16px;line-height:1.55';
-    box.innerHTML = '<strong>Danke' + (v.name ? ', ' + escapeHtml(v.name.split(' ')[0]) : '') +
+    box.innerHTML = '<strong>Danke' + (firstName ? ', ' + escapeHtml(firstName.split(' ')[0]) : '') +
       '!</strong><br>Deine Anfrage ist eingegangen — ich melde mich zeitnah persönlich bei dir.';
     if (form.parentNode) form.parentNode.replaceChild(box, form);
   }
@@ -60,58 +81,45 @@
     if (done.form) return;
     var form = document.querySelector('form');
     if (!form) return;
-
-    // give fields names (helps the backend + accessibility)
-    form.querySelectorAll('input, textarea').forEach(function (f) {
-      if (f.name) return;
-      if (f.tagName === 'TEXTAREA') f.name = 'message';
-      else if (f.type === 'email') f.name = 'email';
-      else f.name = 'name';
-    });
+    nameFields(form);
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      var v = readFields(form);
-      if (!v.email || v.email.indexOf('@') < 1) {
+      var data = collect(form);
+      if (!data.email || data.email.indexOf('@') < 1) {
         alert('Bitte gib eine gültige E-Mail-Adresse an.');
         return;
       }
+      var name = guessName(data);
       var btn = form.querySelector('button, [type=submit]');
       var restore = btn ? btn.textContent : '';
       if (btn) { btn.disabled = true; btn.textContent = 'Wird gesendet…'; }
 
+      function fail() { if (btn) { btn.disabled = false; btn.textContent = restore; } mailtoFallback(data); }
+
       if (WEB3FORMS_KEY) {
+        var payload = { access_key: WEB3FORMS_KEY, subject: 'Neue Anfrage über thewhykings.com', from_name: name || 'Website-Kontakt' };
+        for (var k in data) payload[k] = data[k];
         fetch('https://api.web3forms.com/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify({
-            access_key: WEB3FORMS_KEY,
-            subject: 'Neue Strategiegespräch-Anfrage — thewhykings.com',
-            from_name: v.name || 'Website-Kontakt',
-            name: v.name, email: v.email, message: v.message
-          })
+          body: JSON.stringify(payload)
         }).then(function (r) { return r.json(); })
-          .then(function (d) {
-            if (d && d.success) showThanks(form, v);
-            else { if (btn) { btn.disabled = false; btn.textContent = restore; } mailtoFallback(v); }
-          })
-          .catch(function () { if (btn) { btn.disabled = false; btn.textContent = restore; } mailtoFallback(v); });
+          .then(function (d) { if (d && d.success) showThanks(form, name); else fail(); })
+          .catch(fail);
       } else {
-        mailtoFallback(v);
+        mailtoFallback(data);
         if (btn) { btn.disabled = false; btn.textContent = restore; }
       }
     });
     done.form = true;
   }
 
-  function run() { enhanceForm(); }
-
-  // The homepage renders client-side (React via Babel), so poll until the
-  // form exists, then wire it. Stop once wired (or we give up).
+  // Pages render client-side (React via Babel), so poll until the form exists.
   var tries = 0;
   var iv = setInterval(function () {
-    run();
+    enhanceForm();
     if (done.form || ++tries > 50) clearInterval(iv);
   }, 250);
-  window.addEventListener('load', run);
+  window.addEventListener('load', enhanceForm);
 })();
