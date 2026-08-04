@@ -21,7 +21,7 @@
   // Resolves an asset path to its inlined blob URL when bundled (standalone export),
   // and falls back to the raw path otherwise. Keeps source + standalone in sync.
   window.R = function (p) { return (window.__resources && window.__resources[p]) || p; };
-  window.SITE = { page: 'home', home: '/', sparring: 'sparring.html', legal: 'legal/' };
+  window.SITE = { page: 'home', home: '/', sparring: 'sparring', legal: 'legal/' };
 </script>
 <style>
   html { scroll-behavior: smooth; overflow-x: hidden; }
