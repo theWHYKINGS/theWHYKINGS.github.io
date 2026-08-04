@@ -26,12 +26,10 @@ MSG="${1:-Update site — $(date '+%Y-%m-%d %H:%M')}"
 # These run every deploy so enhancements survive each Claude Design pull.
 echo "Building legal pages…"
 python3 scripts/build_legal.py
+echo "Cleaning up page URLs (sub-pages -> clean names)…"
+python3 scripts/pretty_urls.py
 echo "Ensuring enhance.js is loaded by all app pages…"
 python3 scripts/inject_enhance.py
-# Sub-pages (e.g. the Sparring page) link "home" to theWHYKINGS Homepage.html,
-# but the homepage is served as index.html — keep a copy at that name so those
-# links resolve.
-if [ -f index.html ]; then cp index.html "theWHYKINGS Homepage.html"; fi
 
 if [ -z "$(git status --porcelain)" ]; then
   echo "Nothing changed — working tree is clean. Nothing to deploy."
