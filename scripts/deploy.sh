@@ -30,6 +30,8 @@ echo "Cleaning up page URLs (sub-pages -> clean names)…"
 python3 scripts/pretty_urls.py
 echo "Ensuring enhance.js is loaded by all app pages…"
 python3 scripts/inject_enhance.py
+echo "Ensuring Plausible analytics tag is present on all app pages…"
+python3 scripts/inject_analytics.py
 
 if [ -z "$(git status --porcelain)" ]; then
   echo "Nothing changed — working tree is clean. Nothing to deploy."

@@ -27,6 +27,37 @@ wordmark_css = """
 
 style_block = f"<style>\n{legal_css}\n{wordmark_css}\n</style>"
 
+# Plausible Analytics clause — injected into the Datenschutz page below the
+# "Analyse-Tools und Tools von Drittanbietern" heading (before the Hosting
+# section). Kept here (not in the Claude Design source) so it survives every
+# legal pull and always goes live together with the tracking tag. Cookieless,
+# EU-hosted, no consent banner needed (Art. 6 Abs. 1 lit. f DSGVO).
+PLAUSIBLE_CLAUSE = (
+    '<h3>Plausible Analytics</h3>\n'
+    '  <p>Diese Website nutzt den Analysedienst Plausible Analytics zur '
+    'anonymisierten, statistischen Reichweitenmessung. Anbieter ist die '
+    'Plausible Insights OÜ, Västriku tn 2, 50403 Tartu, Estland. Die '
+    'Verarbeitung der Daten erfolgt ausschließlich auf Servern innerhalb der '
+    'Europäischen Union.</p>\n'
+    '  <p>Plausible setzt <strong>keine Cookies</strong> und speichert keine '
+    'personenbezogenen Daten dauerhaft. Die Auswertung erfolgt vollständig '
+    'anonymisiert – ein Rückschluss auf einzelne Besucher oder eine '
+    'Zusammenführung mit anderen Daten ist nicht möglich. Es findet '
+    'keine Weitergabe an Dritte statt.</p>\n'
+    '  <p>Die Nutzung von Plausible erfolgt auf Grundlage von Art. 6 Abs. 1 '
+    'lit. f DSGVO. Wir haben ein berechtigtes Interesse an der anonymisierten '
+    'Analyse des Nutzerverhaltens, um unser Webangebot zu optimieren. Da keine '
+    'Cookies gesetzt und keine Informationen auf Ihrem Endgerät '
+    'gespeichert oder ausgelesen werden, ist eine Einwilligung nach '
+    '§ 25 TDDDG nicht erforderlich.</p>\n'
+    '  <p>Grundlage der Verarbeitung ist ein Vertrag über '
+    'Auftragsverarbeitung (AVV) mit dem Anbieter. Weitere Informationen finden '
+    'Sie in der Datenschutzerklärung von Plausible: '
+    '<a href="https://plausible.io/data-policy" target="_blank" '
+    'rel="noopener noreferrer">https://plausible.io/data-policy</a>.</p>\n'
+    '  '
+)
+
 # Output paths match the links the Claude Design homepage footer points to
 # (legal/Impressum.html, legal/Datenschutz.html).
 pages = [
@@ -54,6 +85,17 @@ for src, out in pages:
     # 5. fix the homepage back-link -> site root. The Impressum<->Datenschutz
     #    cross-links are siblings inside legal/, so they stay as-is.
     html = re.sub(r"\.\./theWHYKINGS(?:%20| )Homepage\.html", "/", html)
+
+    # 6. inject the Plausible Analytics clause into the Datenschutz page
+    #    (idempotent). Anchored before the Hosting section so it appears under
+    #    "Analyse-Tools und Tools von Drittanbietern".
+    if "Datenschutz" in src and "Plausible" not in html:
+        anchor = '<h2><span class="num">02</span>Hosting</h2>'
+        if anchor in html:
+            html = html.replace(anchor, PLAUSIBLE_CLAUSE + anchor, 1)
+            print("  + Plausible Analytics clause injected")
+        else:
+            print("  ⚠ Hosting anchor not found — Plausible clause NOT inserted")
 
     (root / out).parent.mkdir(parents=True, exist_ok=True)
     (root / out).write_text(html, encoding="utf-8")
