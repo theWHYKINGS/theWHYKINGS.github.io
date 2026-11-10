@@ -1,8 +1,8 @@
-function Angebote({ acc }) {
+function Angebote({ acc, variant, hover }) {
   const goTo = (id) => { const el = document.getElementById(id); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); };
   const Icon = ({ kind }) => {
     const src = window.R(kind === 'helm' ? 'assets/icons/icon-helm.png' : kind === 'group' ? 'assets/icons/icon-group.png' : 'assets/icons/icon-glove.png');
-    return <img src={src} alt="" aria-hidden="true" style={{ height: 64, width: 'auto', objectFit: 'contain', display: 'block' }} />;
+    return <img src={src} alt="" aria-hidden="true" style={{ width: 72, height: 56, objectFit: 'contain', objectPosition: 'right center', display: 'block' }} />;
   };
   const items = [
     {
@@ -21,6 +21,7 @@ function Angebote({ acc }) {
       d: 'Intensiv und fordernd: Führung üben, wo es knirscht — und Verantwortung real übernehmen.',
     },
   ];
+  if (variant && variant !== 'Aktuell') return <window.AngebotVariant variant={variant} hover={hover} items={items} acc={acc} goTo={goTo} />;
   return (
     <section id="angebote" data-screen-label="Angebote" style={{ padding: '100px 40px', background: 'var(--neutral-50)' }}>
       <div style={{ maxWidth: 'var(--container-lg)', margin: '0 auto' }}>
@@ -35,7 +36,7 @@ function Angebote({ acc }) {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }} className="grid-3">
           {items.map((s) => (
             <div key={s.tail} className="twk-svc-card" style={{ position: 'relative', display: 'flex', flexDirection: 'column', background: 'var(--neutral-900)', borderRadius: 'var(--radius-lg)', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <div style={{ position: 'absolute', top: 8, right: 8, pointerEvents: 'none' }}>
+              <div style={{ position: 'absolute', top: 28, right: 28, pointerEvents: 'none' }}>
                 <Icon kind={s.icon} />
               </div>
               <div style={{ position: 'relative', padding: '32px 28px 30px', flex: 1, display: 'flex', flexDirection: 'column' }}>

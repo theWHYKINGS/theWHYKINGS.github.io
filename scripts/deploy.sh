@@ -28,6 +28,8 @@ echo "Building legal pages…"
 python3 scripts/build_legal.py
 echo "Cleaning up page URLs (sub-pages -> clean names)…"
 python3 scripts/pretty_urls.py
+echo "Restoring the custom gold WebGL Sparring hero (sections/sparring/SpHero.jsx)…"
+python3 scripts/inject_hero.py
 echo "Ensuring enhance.js is loaded by all app pages…"
 python3 scripts/inject_enhance.py
 echo "Ensuring Plausible analytics tag is present on all app pages…"

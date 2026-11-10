@@ -23,14 +23,14 @@ function Header({ onNav, acc }) {
           the WHYKINGS
         </span>
       </a>
-      <nav style={{ display: 'flex', alignItems: 'center', gap: 28 }} className="twk-desktop-nav">
+      <nav style={{ display: 'flex', alignItems: 'center', gap: 8 }} className="twk-desktop-nav">
         {links.map(([label, id]) => (
           <a key={id} href={`#${id}`} onClick={(e) => { e.preventDefault(); onNav(id); }}
-             style={{ fontFamily: 'var(--font-body)', fontSize: 14.5, fontWeight: 500, color: 'rgba(255,255,255,0.78)', letterSpacing: '0.01em' }}>
+             style={{ fontFamily: 'var(--font-body)', fontSize: 14.5, fontWeight: 500, color: 'rgba(255,255,255,0.78)', letterSpacing: '0.01em', padding: '10px 10px', borderRadius: 6 }}>
             {label}
           </a>
         ))}
-        <a href="https://www.linkedin.com/in/dominik-haselbauer-01614284/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn-Profil von Dominik Haselbauer" title="LinkedIn" style={{ display: 'flex', alignItems: 'center' }}>
+        <a href="https://www.linkedin.com/in/dominik-haselbauer-01614284/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn-Profil von Dominik Haselbauer" title="LinkedIn" style={{ display: 'flex', alignItems: 'center', padding: 10, margin: '0 4px', borderRadius: 6 }}>
           <svg width="19" height="19" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.125 2.062 2.062 0 0 1 0 4.125zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
         </a>
         <Button variant={acc.btn} size="sm" onClick={() => onNav('kontakt')}>Strategiegespräch</Button>
