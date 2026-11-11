@@ -10,25 +10,33 @@
 <link rel="icon" type="image/png" sizes="32x32" href="assets/logos/favicon-32.png" />
 <link rel="icon" type="image/png" sizes="64x64" href="assets/logos/favicon-64.png" />
 <link rel="apple-touch-icon" href="assets/logos/apple-touch-icon.png" />
+<meta name="description" content="Executive Sparring und Leadership Coaching mit Dominik Haselbauer, Geschäftsführer der THE WHYKINGS. Klarheit in Führung, ohne Theater." />
+<link rel="canonical" href="https://www.thewhykings.com/" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="de_DE" />
+<meta property="og:site_name" content="THE WHYKINGS" />
+<meta property="og:title" content="THE WHYKINGS — Executive Sparring &amp; Leadership Coaching" />
+<meta property="og:description" content="Executive Sparring und Leadership Coaching mit Dominik Haselbauer. Klarheit in Führung, ohne Theater." />
+<meta property="og:url" content="https://www.thewhykings.com/" />
+<meta property="og:image" content="https://www.thewhykings.com/assets/logos/apple-touch-icon.png" />
+<meta name="twitter:card" content="summary" />
 <meta name="theme-color" content="#181818" />
 <link rel="stylesheet" href="_ds/thewhykings-design-system-57a77553-0890-4b89-bd34-5e9501453f1e/styles.css" />
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="_ds/thewhykings-design-system-57a77553-0890-4b89-bd34-5e9501453f1e/_ds_bundle.js"></script>
-<script src="image-slot.js"></script>
 <script>
   // Resolves an asset path to its inlined blob URL when bundled (standalone export),
   // and falls back to the raw path otherwise. Keeps source + standalone in sync.
   window.R = function (p) { return (window.__resources && window.__resources[p]) || p; };
-  window.SITE = { page: 'home', home: '/', sparring: 'sparring', legal: 'legal/' };
+  window.SITE = { page: 'home', home: '/', sparring: '/sparring-1-1/', legal: '/legal/' };
 </script>
 <style>
   html { scroll-behavior: smooth; overflow-x: hidden; }
   body { margin: 0; background: var(--neutral-800); font-family: var(--font-body); overflow-wrap: break-word; }
   a { text-decoration: none; }
   img { max-width: 100%; }
-  image-slot { border-radius: inherit; }
   /* Lange Komposita nicht über den Rand schieben */
   .methodik-grid > div, .proof-metrics > div, .grid-3 > div, .tension-row > div { min-width: 0; }
   .methodik-grid h3, .proof-metrics > div { hyphens: auto; }
@@ -124,7 +132,6 @@
 </template>
 <div id="root"></div>
 
-<script type="text/babel" src="tweaks-panel.jsx"></script>
 <script type="text/babel">
   const { Button, Card, Badge, Input, Avatar, Switch } = window.TheWHYKINGSDesignSystem_57a775;
   window.Button = Button; window.Card = Card; window.Badge = Badge; window.Input = Input; window.Avatar = Avatar;
@@ -144,15 +151,7 @@
 <script type="text/babel" src="sections/Footer.jsx"></script>
 
 <script type="text/babel">
-  const { useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakToggle } = window;
-
-  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-    "heroHeadline": "Klarheit",
-    "accent": "Gold",
-    "helm": true,
-    "angebote": "B",
-    "hover": "Färbung"
-  }/*EDITMODE-END*/;
+  const SETTINGS = { heroHeadline: "Klarheit", accent: "Gold", helm: true };
 
   function buildAccent(name) {
     if (name === 'Sage') {
@@ -174,7 +173,7 @@
   }
 
   function App() {
-    const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+    const t = SETTINGS;
     const acc = buildAccent(t.accent);
     const {
       Header, Hero, Problem, Prinzipien, Angebote, Methodik, Haltung, Proof, UeberDominik, FAQ, FinalCTA, Footer,
@@ -191,7 +190,7 @@
         <Hero onNav={onNav} t={t} acc={acc} />
         <Problem acc={acc} />
         <Prinzipien acc={acc} />
-        <Angebote acc={acc} variant={t.angebote} hover={t.hover} />
+        <Angebote acc={acc} variant="B" hover="Färbung" />
         <Methodik acc={acc} />
         <Haltung acc={acc} />
         <Proof acc={acc} />
@@ -200,31 +199,12 @@
         <FinalCTA acc={acc} />
         <Footer acc={acc} />
 
-        <TweaksPanel>
-          <TweakSection label="Hero" />
-          <TweakRadio label="Headline" value={t.heroHeadline}
-                      options={['Klarheit', 'Muster', 'Zumutung']}
-                      onChange={(v) => setTweak('heroHeadline', v)} />
-          <TweakSection label="Leistungen" />
-          <TweakRadio label="Kartenstil" value={t.angebote}
-                      options={['Aktuell', 'A', 'B', 'C']}
-                      onChange={(v) => setTweak('angebote', v)} />
-          <TweakRadio label="Hover (B)" value={t.hover}
-                      options={['Färbung', 'Lift', 'Fläche', 'Ruhig', 'Spotlight']}
-                      onChange={(v) => setTweak('hover', v)} />
-          <TweakSection label="Marke" />
-          <TweakRadio label="Akzentfarbe" value={t.accent}
-                      options={['Gold', 'Sage']}
-                      onChange={(v) => setTweak('accent', v)} />
-          <TweakToggle label="Helm-Wasserzeichen" value={t.helm}
-                       onChange={(v) => setTweak('helm', v)} />
-        </TweaksPanel>
       </React.Fragment>
     );
   }
 
   ReactDOM.createRoot(document.getElementById('root')).render(<App />);
 </script>
-  <script defer src="enhance.js"></script>
+  <script defer src="/enhance.js?v=bc7b38d7"></script>
 </body>
 </html>

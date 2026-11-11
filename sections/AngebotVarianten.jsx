@@ -6,12 +6,12 @@ function AngebotVariant({ variant, hover, items, acc, goTo }) {
   const Cta = ({ s, className, children, ...rest }) => { const p = cta(s); const Tag = p.as; const { as, ...r } = p; return <Tag className={className} aria-label={'Mehr erfahren: ' + s.tail} {...r} {...rest}>{children}</Tag>; };
   const rest = (s) => s.tail.replace(/^Leadership /, '');
   const head = (dark) => (
-    <div style={{ marginBottom: 48, display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)', gap: '16px 56px', alignItems: 'end' }} className="ang-head">
+    <div style={{ marginBottom: 48, display: 'grid', gridTemplateColumns: 'minmax(0,1fr)' }} className="ang-head">
       <div>
         <div className="twk-overline" style={{ color: dark ? 'var(--color-gold)' : acc.deep }}>03 / Leistungen</div>
         <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(2.1rem,4vw,3rem)', margin: '14px 0 0', letterSpacing: '-0.02em', color: dark ? '#fff' : undefined }}>Wie wir arbeiten können</h2>
+        <p style={{ font: 'var(--text-lead)', color: dark ? 'rgba(255,255,255,0.66)' : 'var(--color-fg-muted)', maxWidth: 500, margin: 0 }}>Drei Wege, ein Anspruch: Wirksamkeit statt nur nette Gespräche.</p>
       </div>
-      <p style={{ font: 'var(--text-lead)', color: dark ? 'rgba(255,255,255,0.66)' : 'var(--color-fg-muted)', maxWidth: 480, margin: 0 }}>Drei Wege, ein Anspruch: Wirksamkeit statt nur nette Gespräche.</p>
     </div>
   );
   const css = `

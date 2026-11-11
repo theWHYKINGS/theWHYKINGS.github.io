@@ -1,32 +1,48 @@
 #!/usr/bin/env python3
-"""inject_enhance.py — ensure every top-level app page loads enhance.js.
+"""inject_enhance.py — ensure every page loads enhance.js (the production layer
+that actually delivers the contact forms via Web3Forms).
 
-The homepage and any sub-pages (e.g. the Sparring 1:1 page) are regenerated
-from Claude Design on every deploy, which drops our <script src="enhance.js">
-tag. This re-adds it (idempotently) just before </body> on each top-level
-*.html page that is a client-rendered app page (contains text/babel scripts) —
-so the working contact form survives every pull. Legal pages (legal/) and the
-homepage copy are handled separately.
+Claude Design regenerates the pages, which drops our <script> tag, so this
+re-adds it (idempotently) just before </body> on each page in scripts/pages.py.
+The tag is root-absolute (/enhance.js) so it also works from /sparring-1-1/.
+
+The URL carries a content hash (?v=…): browsers and GitHub Pages cache static
+files for a while, and a stale enhance.js next to a fresh page would make the
+forms misbehave. The hash changes whenever enhance.js does, so the tag is
+rewritten here whenever it is out of date.
 
     python3 scripts/inject_enhance.py
 """
+import hashlib
+import re
+import sys
 from pathlib import Path
 
-root = Path(__file__).resolve().parent.parent
-TAG = '<script defer src="enhance.js"></script>'
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from pages import page_files, ROOT  # noqa: E402
 
-pages = sorted(root.glob("*.html"))
-for idx in pages:
-    html = idx.read_text(encoding="utf-8")
-    if "text/babel" not in html:          # only client-rendered app pages
+js = ROOT / "enhance.js"
+if not js.exists():
+    raise SystemExit("inject_enhance: enhance.js is missing")
+version = hashlib.sha1(js.read_bytes()).hexdigest()[:8]
+TAG = f'<script defer src="/enhance.js?v={version}"></script>'
+EXISTING = re.compile(r'<script defer src="/?enhance\.js[^"]*"></script>')
+
+for p in page_files():
+    html = p.read_text(encoding="utf-8")
+    name = p.relative_to(ROOT).as_posix()
+    if TAG in html:
+        print(f"{name}: enhance.js already present (v={version})")
         continue
-    if 'src="enhance.js"' in html:
-        print(f"{idx.name}: enhance.js already present")
+    if EXISTING.search(html):                       # outdated tag -> update in place
+        html = EXISTING.sub(TAG, html)
+        p.write_text(html, encoding="utf-8")
+        print(f"{name}: enhance.js tag updated (v={version})")
         continue
     i = html.rfind("</body>")
     if i == -1:
-        print(f"{idx.name}: no </body> — skipped")
+        print(f"{name}: no </body> — skipped")
         continue
     html = html[:i] + "  " + TAG + "\n" + html[i:]
-    idx.write_text(html, encoding="utf-8")
-    print(f"{idx.name}: enhance.js injected")
+    p.write_text(html, encoding="utf-8")
+    print(f"{name}: enhance.js injected (v={version})")

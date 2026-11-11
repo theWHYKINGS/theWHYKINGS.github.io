@@ -1,8 +1,23 @@
 function FinalCTA({ acc }) {
   const [sent, setSent] = React.useState(false);
+  const [sending, setSending] = React.useState(false);
+  const [mailto, setMailto] = React.useState(null); // set when delivery failed: mailto fallback link
   const [form, setForm] = React.useState({ name: '', email: '', message: '' });
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
-  const submit = (e) => { e.preventDefault(); setSent(true); };
+  const submit = (e) => {
+    e.preventDefault();
+    if (sending) return;
+    const T = window.TWK; // provided by enhance.js on the live site
+    // Design editor / preview (no production layer): original frontend-only behaviour, nothing is sent.
+    if (!(T && T.submitInquiry)) { setSent(true); return; }
+    const fields = { name: form.name, email: form.email, nachricht: form.message };
+    const subject = 'Neue Anfrage über thewhykings.com — Strategiegespräch';
+    setSending(true); setMailto(null);
+    T.submitInquiry(fields, { subject, fromName: form.name })
+      .then(() => setSent(true))                       // only after Web3Forms confirmed delivery
+      .catch(() => setMailto(T.mailtoHref(fields, subject)))
+      .then(() => setSending(false));
+  };
   const expect = [
     '30–45 Minuten, ruhig. ehrlich und ohne Verkaufsdruck.',
     'Eine erste, klare Einschätzung, was gerade wirklich wichtig für dich ist.',
@@ -48,7 +63,12 @@ function FinalCTA({ acc }) {
                 <textarea value={form.message} onChange={set('message')} rows={4} placeholder="Ein paar Sätze reichen: Wo stehst du gerade, was soll klarer werden?"
                   style={{ fontFamily: 'var(--font-body)', fontSize: 15, padding: 12, borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border-strong)', resize: 'vertical', color: 'var(--twk-white)' }} />
               </label>
-              <Button variant={acc.btn} type="submit" fullWidth size="lg">Strategiegespräch anfragen</Button>
+              <Button variant={acc.btn} type="submit" fullWidth size="lg" disabled={sending}>{sending ? 'Wird gesendet …' : 'Strategiegespräch anfragen'}</Button>
+              {mailto && (
+                <p role="alert" style={{ margin: 0, fontSize: 14, lineHeight: 1.55, color: 'var(--color-fg)', background: 'var(--gold-50)', border: '1px solid var(--gold-200)', borderRadius: 'var(--radius-md)', padding: '12px 14px' }}>
+                  Das Senden hat gerade nicht geklappt. Deine Eingaben sind noch da: Versuch es gleich noch einmal oder <a href={mailto} style={{ color: 'var(--gold-600)', fontWeight: 600 }}>schreib mir direkt per E-Mail</a>.
+                </p>
+              )}
             </form>
           )}
         </Card>

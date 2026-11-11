@@ -24,16 +24,16 @@ MSG="${1:-Update site — $(date '+%Y-%m-%d %H:%M')}"
 
 # --- post-process the fresh export before publishing ---
 # These run every deploy so enhancements survive each Claude Design pull.
-echo "Building legal pages…"
+echo "Building legal pages (+ Plausible & Web3Forms clauses)…"
 python3 scripts/build_legal.py
-echo "Cleaning up page URLs (sub-pages -> clean names)…"
-python3 scripts/pretty_urls.py
-echo "Restoring the custom gold WebGL Sparring hero (sections/sparring/SpHero.jsx)…"
-python3 scripts/inject_hero.py
-echo "Ensuring enhance.js is loaded by all app pages…"
+echo "Normalising URLs (home -> /, canonical, sitemap, /sparring redirect)…"
+python3 scripts/patch_site.py
+echo "Ensuring enhance.js (contact-form delivery) is loaded by all pages…"
 python3 scripts/inject_enhance.py
-echo "Ensuring Plausible analytics tag is present on all app pages…"
+echo "Ensuring the Plausible analytics tag is present on all pages…"
 python3 scripts/inject_analytics.py
+echo "Verifying site invariants (aborts the deploy on a regression)…"
+python3 scripts/verify_site.py
 
 if [ -z "$(git status --porcelain)" ]; then
   echo "Nothing changed — working tree is clean. Nothing to deploy."
@@ -44,10 +44,14 @@ echo "Staging changes…"
 git add -A
 git status --short
 
+# Attribution: pass the model that is running this session, e.g.
+#   CLAUDE_COAUTHOR="Claude Sonnet 5.5 <noreply@anthropic.com>" scripts/deploy.sh "msg"
+CO_AUTHOR="${CLAUDE_COAUTHOR:-Claude <noreply@anthropic.com>}"
+
 echo "Committing: $MSG"
 git commit -q -m "$MSG
 
-Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
+Co-Authored-By: $CO_AUTHOR"
 
 echo "Pushing to GitHub…"
 git push -q origin main

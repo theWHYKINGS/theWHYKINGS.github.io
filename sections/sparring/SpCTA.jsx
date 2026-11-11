@@ -2,10 +2,27 @@ function SpCTA({ acc }) {
   const S = window.SITE || {};
   const legal = S.legal || 'legal/';
   const [form, setForm] = React.useState({ name: '', email: '', rolle: '', org: '', frage: '', mandat: 'Unternehmensmandat (B2B)', ort: 'Online' });
-  const [opened, setOpened] = React.useState(false);
+  const [opened, setOpened] = React.useState(false);   // Design preview only: mail client was opened
+  const [sent, setSent] = React.useState(false);
+  const [sending, setSending] = React.useState(false);
+  const [mailto, setMailto] = React.useState(null);    // set when delivery failed: mailto fallback link
+  const live = !!(window.TWK && window.TWK.submitInquiry); // production layer (enhance.js) present on the live site
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
   const submit = (e) => {
     e.preventDefault();
+    if (sending) return;
+    const subject = 'Mandatsanfrage: Kennenlernen — Leadership Sparring 1:1';
+    const T = window.TWK;
+    if (T && T.submitInquiry) {
+      const fields = { name: form.name, email: form.email, rolle: form.rolle, organisation: form.org, mandat: form.mandat, rahmen: form.ort, frage: form.frage };
+      setSending(true); setMailto(null);
+      T.submitInquiry(fields, { subject, fromName: form.name })
+        .then(() => setSent(true))                     // only after Web3Forms confirmed delivery
+        .catch(() => setMailto(T.mailtoHref(fields, subject)))
+        .then(() => setSending(false));
+      return;
+    }
+    // Design editor / preview (no production layer): original mailto flow, nothing is sent.
     const body = [
       'Mandatsanfrage — Leadership Sparring 1:1', '',
       'Name: ' + form.name,
@@ -17,7 +34,7 @@ function SpCTA({ acc }) {
       'Was soll gerade klarer werden?',
       form.frage,
     ].join('\n');
-    window.location.href = 'mailto:info@thewhykings.com?subject=' + encodeURIComponent('Mandatsanfrage: Kennenlernen — Leadership Sparring 1:1') + '&body=' + encodeURIComponent(body);
+    window.location.href = 'mailto:info@thewhykings.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
     setOpened(true);
   };
   const expect = ['30 bis 45 Minuten', 'eine erste ehrliche Einschätzung', 'eine klare Entscheidung über den nächsten Schritt'];
@@ -50,6 +67,13 @@ function SpCTA({ acc }) {
           </ul>
         </div>
         <Card variant="elevated" padding="lg">
+          {sent ? (
+            <div role="status" style={{ textAlign: 'center', padding: '28px 8px' }}>
+              <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 24, color: acc.deep }}>Danke{form.name ? ', ' + form.name.split(' ')[0] : ''}.</div>
+              <p style={{ color: 'var(--color-fg-muted)', marginTop: 8, marginBottom: 20 }}>Deine Anfrage ist eingegangen. Ich melde mich persönlich bei dir.</p>
+              <Button variant="secondary" onClick={() => { setSent(false); setForm({ name: '', email: '', rolle: '', org: '', frage: '', mandat: 'Unternehmensmandat (B2B)', ort: 'Online' }); }}>Noch eine Anfrage senden</Button>
+            </div>
+          ) : (
           <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             <Input label="Name" value={form.name} onChange={set('name')} placeholder="Dein Name" required />
             <Input label="E-Mail" type="email" value={form.email} onChange={set('email')} placeholder="du@firma.de" required />
@@ -71,16 +95,22 @@ function SpCTA({ acc }) {
                 <Radio group="ort" value="Persönlich in München" />
               </fieldset>
             </div>
-            <Button variant={acc.btn} type="submit" fullWidth size="lg">Kennenlernen anfragen</Button>
+            <Button variant={acc.btn} type="submit" fullWidth size="lg" disabled={sending}>{sending ? 'Wird gesendet …' : 'Kennenlernen anfragen'}</Button>
+            {mailto && (
+              <p role="alert" style={{ margin: 0, fontSize: 14, lineHeight: 1.55, color: 'var(--color-fg)', background: 'var(--gold-50)', border: '1px solid var(--gold-200)', borderRadius: 'var(--radius-md)', padding: '12px 14px' }}>
+                Das Senden hat gerade nicht geklappt. Deine Eingaben sind noch da: Versuch es gleich noch einmal oder <a href={mailto} style={{ color: 'var(--gold-600)', fontWeight: 600 }}>schreib mir direkt per E-Mail</a>.
+              </p>
+            )}
             {opened && (
               <p style={{ margin: 0, fontSize: 14, lineHeight: 1.55, color: 'var(--color-fg)', background: 'var(--gold-50)', border: '1px solid var(--gold-200)', borderRadius: 'var(--radius-md)', padding: '12px 14px' }}>
                 Dein E-Mail-Programm sollte sich mit der vorbereiteten Anfrage geöffnet haben. Falls nicht, schreib direkt an <a href="mailto:info@thewhykings.com" style={{ color: 'var(--gold-600)', fontWeight: 600 }}>info@thewhykings.com</a>.
               </p>
             )}
             <p style={{ margin: 0, fontSize: 13, lineHeight: 1.55, color: 'var(--color-fg-subtle)' }}>
-              Mit dem Absenden fragst du ein unverbindliches Kennenlernen an. Es entsteht kein Vertrag. Der Versand erfolgt über dein E-Mail-Programm an info@thewhykings.com. Hinweise zum Umgang mit deinen Daten findest du in der <a href={legal + 'Datenschutz.html'} style={{ color: 'var(--gold-600)', fontWeight: 600 }}>Datenschutzerklärung</a>.
+              Mit dem Absenden fragst du ein unverbindliches Kennenlernen an. Es entsteht kein Vertrag. {live ? 'Die Anfrage wird über einen Formular-Dienstleister (Web3Forms) an info@thewhykings.com zugestellt.' : 'Der Versand erfolgt über dein E-Mail-Programm an info@thewhykings.com.'} Hinweise zum Umgang mit deinen Daten findest du in der <a href={legal + 'Datenschutz.html'} style={{ color: 'var(--gold-600)', fontWeight: 600 }}>Datenschutzerklärung</a>.
             </p>
           </form>
+          )}
         </Card>
       </div>
     </section>

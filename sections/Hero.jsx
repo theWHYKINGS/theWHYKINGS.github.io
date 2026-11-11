@@ -1,11 +1,11 @@
 function Hero({ onNav, t, acc }) {
   const variants = {
-    Klarheit: { lines: ['Führung unter Druck.', 'Klarheit ohne Theater.'], gold: 1 },
+    Klarheit: { lines: ['IMPULSE DIE FÜHRUNG', 'VERÄNDERN'], gold: 1 },
     Muster: { lines: ['Unter Druck zeigt sich', 'nicht dein Stil.', 'Sondern dein Muster.'], gold: 2 },
     Zumutung: { lines: ['Klarheit ist keine Härte.', 'Unklarheit ist', 'die eigentliche Zumutung.'], gold: 2 },
   };
   const v = variants[t.heroHeadline] || variants.Klarheit;
-  const hsize = 'clamp(2.5rem, 5.4vw, 4.4rem)';
+  const hsize = 'clamp(2.5rem, 8vw, 80px)';
 
   return (
     <section id="top" data-screen-label="Hero" style={{ position: 'relative', background: 'var(--neutral-800)', color: '#fff', overflow: 'hidden' }}>
@@ -26,7 +26,7 @@ function Hero({ onNav, t, acc }) {
           </p>
           <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
             <Button variant={acc.btn} size="lg" onClick={() => onNav('kontakt')} iconRight={<span style={{ fontSize: 18 }}>→</span>}>Strategiegespräch anfragen</Button>
-            <Button variant="secondary" size="lg" onClick={() => onNav('prinzipien')} style={{ color: '#fff', borderColor: 'rgba(255,255,255,0.28)', background: 'transparent' }}>Wie ich arbeite</Button>
+            <Button variant="secondary" size="lg" onClick={() => onNav('prinzipien')} style={{ color: '#fff', borderColor: 'rgba(255,255,255,0.28)', background: 'transparent' }}>THE WHYKINGS</Button>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginTop: 40, color: 'rgba(255,255,255,0.5)', fontSize: 15 }}>
             <span style={{ width: 28, height: 1, background: 'rgba(255,255,255,0.3)' }}></span>
@@ -39,7 +39,7 @@ function Hero({ onNav, t, acc }) {
             <img src={window.R('uploads/Profilbild_Dominik_Haselbauer-24d6a503.jpg')} alt="Dominik Haselbauer" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 22%', filter: 'grayscale(1) contrast(1.06) brightness(0.92)' }} />
             <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, padding: '40px 24px 22px', background: 'linear-gradient(to top, rgba(0,0,0,0.72), transparent)', pointerEvents: 'none' }}>
               <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 18, color: '#fff', letterSpacing: '0.01em', textTransform: 'uppercase' }}>Dominik Haselbauer</div>
-              <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)', marginTop: 2 }}>Leadership Coach &amp; Executive Sparringspartner</div>
+              <div style={{ fontSize: 16, color: 'rgba(255,255,255,0.7)', marginTop: 2 }}>Führungskräfteentwickler &amp;<br />Geschäftsführer der THE WHYKINGS</div>
             </div>
           </div>
         </div>

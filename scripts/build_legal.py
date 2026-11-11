@@ -58,6 +58,21 @@ PLAUSIBLE_CLAUSE = (
     '  '
 )
 
+# Web3Forms clause — the contact forms deliver through this processor, so the
+# (otherwise generic) "Kontaktformular" section must name it. Added as the last
+# paragraph of that section, i.e. right before "Anfrage per E-Mail, Telefon oder
+# Telefax". Same wording as on the Academy's Datenschutzerklärung.
+WEB3FORMS_CLAUSE = (
+    '<p>Für die technische Zustellung der Formularanfragen an unser E-Mail-Postfach '
+    'nutzen wir den Dienst <strong>Web3Forms</strong>. Die von Ihnen eingegebenen Daten '
+    '(je nach Formular: Name, E-Mail-Adresse, Rolle, Organisation, gewünschtes Mandat '
+    'bzw. gewünschter Rahmen und Ihre Nachricht) werden dabei an die Server des Anbieters '
+    'übermittelt und von dort per E-Mail an uns weitergeleitet. Eine Verarbeitung außerhalb '
+    'der Europäischen Union kann dabei nicht ausgeschlossen werden. Weitere Informationen '
+    'finden Sie unter <a href="https://web3forms.com/privacy" target="_blank" '
+    'rel="noopener noreferrer">web3forms.com/privacy</a>.</p>\n  '
+)
+
 # Output paths match the links the Claude Design homepage footer points to
 # (legal/Impressum.html, legal/Datenschutz.html).
 pages = [
@@ -96,6 +111,15 @@ for src, out in pages:
             print("  + Plausible Analytics clause injected")
         else:
             print("  ⚠ Hosting anchor not found — Plausible clause NOT inserted")
+
+    # 7. name Web3Forms as the processor of the contact forms (idempotent)
+    if "Datenschutz" in src and "Web3Forms" not in html:
+        anchor2 = "<h3>Anfrage per E-Mail, Telefon oder Telefax</h3>"
+        if anchor2 in html:
+            html = html.replace(anchor2, WEB3FORMS_CLAUSE + anchor2, 1)
+            print("  + Web3Forms clause injected")
+        else:
+            print("  ⚠ 'Anfrage per E-Mail…' anchor not found — Web3Forms clause NOT inserted")
 
     (root / out).parent.mkdir(parents=True, exist_ok=True)
     (root / out).write_text(html, encoding="utf-8")
