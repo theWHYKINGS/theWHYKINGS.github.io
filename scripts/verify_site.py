@@ -64,6 +64,27 @@ if 'data-gold-hero' not in hero or "getContext('webgl'" not in hero:
 if not (ROOT / "assets/hero-gold.webp").exists():
     problems.append("assets/hero-gold.webp is missing")
 
+# no third-party requests: fonts, React and Babel are served from this repo (the
+# Datenschutzerklärung says so; a Design pull re-introduces the CDN links, and
+# scripts/localize_assets.py rewrites them again on every deploy)
+from localize_assets import check_vendor  # noqa: E402
+THIRD_PARTY = ("fonts.googleapis.com", "fonts.gstatic.com", "unpkg.com",
+               "cdn.jsdelivr.net", "cdnjs.cloudflare.com", "ajax.googleapis.com")
+scan = [ROOT / p["out"] for p in PAGES]
+for sub in ("_ds", "sections"):
+    for ext in ("*.css", "*.js", "*.jsx"):
+        scan += sorted((ROOT / sub).rglob(ext))
+scan += [ROOT / "enhance.js", ROOT / "vendor/fonts-local.css"]
+for f in scan:
+    if not f.exists():
+        continue
+    text = f.read_text(encoding="utf-8", errors="replace")
+    for host in THIRD_PARTY:
+        if host in text:
+            problems.append(f"{f.relative_to(ROOT).as_posix()}: still references {host} — "
+                            "visitors' IPs would go to a third party (localize_assets.py did not catch it)")
+problems += [f"vendor: {p}" for p in check_vendor()]
+
 # internal docs must not be published
 for leak in ("CLAUDE-CODE-HANDOFF.md",):
     if (ROOT / leak).exists():

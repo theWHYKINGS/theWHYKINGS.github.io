@@ -71,11 +71,20 @@ scripts/deploy.sh "describe what changed"
    **Plausible** + **Web3Forms** clauses to the Datenschutzerklärung
 2. `patch_site.py` — root-absolute `window.SITE` links (home = `/`), canonical/sitemap
    trailing slash for `/sparring-1-1/`, writes the `/sparring` → `/sparring-1-1/` redirect stub
-3. `inject_enhance.py` — `<script defer src="/enhance.js?v=<hash>">` on every page
-4. `inject_analytics.py` — Plausible snippet in every `<head>`
-5. **`verify_site.py` — the guard.** Aborts the deploy (exit 1) if a pull regressed something
+3. `localize_assets.py` — **no third-party requests**: the Design export loads Jost/Albert Sans
+   from Google Fonts and React/ReactDOM/Babel from unpkg.com on every pull; this rewrites
+   them to the committed copies in `vendor/` + `assets/fonts/` (React as the production
+   build, files hash-pinned to the unpkg builds). The Datenschutz promises exactly this
+   ("Google Fonts sind lokal installiert, keine Verbindung zu Google").
+4. `inject_enhance.py` — `<script defer src="/enhance.js?v=<hash>">` on every page
+5. `inject_analytics.py` — Plausible snippet in every `<head>`
+6. **`verify_site.py` — the guard.** Aborts the deploy (exit 1) if a pull regressed something
    we layer on top: a `<form>` without `TWK.submitInquiry` (would fake the send), the gold
-   hero gone, missing Plausible/enhance tag, internal docs in the served root.
+   hero gone, missing Plausible/enhance tag, **any reference to Google Fonts / unpkg / other
+   CDNs**, vendored files not matching their pinned hashes, internal docs in the served root.
+   If Design bumps React/Babel, the pinned patterns no longer match, the unpkg tag stays and the
+   guard fails — re-vendor then (download the new unpkg build, update the hash in
+   `localize_assets.py`).
 
 Then commit + push (+ a Pages build request is not needed here; Pages builds on push).
 
@@ -106,6 +115,45 @@ gold hero (`sections/sparring/SpHero.jsx`) are normal Design files that Claude e
 gold hero's canonical copy is `scripts/sphero_component.jsx`. If a future Design edit rewrites
 one of them and `verify_site.py` fails, re-apply the wiring/hero from this repo's git history
 (or the canonical copy) before deploying — don't bypass the guard.
+
+## Writing back to Design (keep Design == production)
+
+When Claude edits a file that also lives in Design's `deploy/`, push it back — otherwise the
+next pull silently reverts it. The write endpoint is **undocumented** and is a client-streaming
+Connect call: `UploadFile` rejects plain JSON (415). It wants `Content-Type:
+application/connect+json` and 5-byte-enveloped frames (1 flag byte + 4-byte big-endian
+length): first a `meta` frame, then a `data` frame (base64 of the bytes):
+
+```js
+const frame=(o)=>{const j=new TextEncoder().encode(JSON.stringify(o));const b=new Uint8Array(5+j.length);
+  b[0]=0;new DataView(b.buffer).setUint32(1,j.length,false);b.set(j,5);return b;};
+await fetch(BASE+'UploadFile',{method:'POST',credentials:'include',
+  headers:{'Content-Type':'application/connect+json','Connect-Protocol-Version':'1'},
+  body:new Blob([frame({meta:{projectId:PID,path:'deploy/sections/sparring/SpHero.jsx'}}),
+                 frame({data:base64OfBytes})])});
+```
+
+- Fetch the bytes straight from the live site inside the browser tab (GitHub Pages sends
+  `access-control-allow-origin: *`); base64 in 32 KB chunks (`String.fromCharCode.apply`).
+- Back up the Design original first (`GetFile` → download), and **verify by SHA-256** against the
+  live file afterwards (`crypto.subtle.digest`). Don't trust the call's result value in the REPL —
+  it can come back `undefined` even though the upload succeeded; read the file back instead.
+- Never use a top-level `return` in the REPL snippet.
+
+State on 2026-11-11 — **Design and repo are in sync** (proven by a simulated deploy: a fresh
+pull of `deploy/` run through the full pipeline reproduced all 107 served files byte-for-byte,
+ignoring the Design harness noise):
+- Pushed back into Design, identical to live: `deploy/sections/sparring/SpHero.jsx` (gold hero),
+  `deploy/assets/hero-gold.webp`, and the wired forms `deploy/sections/FinalCTA.jsx` and
+  `deploy/sections/sparring/SpCTA.jsx` (they behave exactly like the originals in the Design
+  editor because `window.TWK` is absent there). Backups of the replaced Design originals:
+  `~/Downloads/BACKUP-design-SpHero-portrait.jsx`, `BACKUP-design-FinalCTA.jsx`,
+  `BACKUP-design-SpCTA.jsx`.
+- Deliberately NOT in Design (production layers, injected on every deploy): enhance.js tag,
+  Plausible, localized fonts/React, the Datenschutz clauses, URL normalisation.
+- **To verify sync after changing something:** run the pull into a temp copy of the repo, run
+  the pipeline there and diff against the working tree (see git history of this file's session
+  for the script) — an empty diff means the next "deploy" changes nothing unexpected.
 
 ## Testing locally (read this before trusting a preview)
 

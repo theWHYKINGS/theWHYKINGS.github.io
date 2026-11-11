@@ -28,6 +28,8 @@ echo "Building legal pages (+ Plausible & Web3Forms clauses)…"
 python3 scripts/build_legal.py
 echo "Normalising URLs (home -> /, canonical, sitemap, /sparring redirect)…"
 python3 scripts/patch_site.py
+echo "Self-hosting fonts + React/Babel (no third-party requests)…"
+python3 scripts/localize_assets.py
 echo "Ensuring enhance.js (contact-form delivery) is loaded by all pages…"
 python3 scripts/inject_enhance.py
 echo "Ensuring the Plausible analytics tag is present on all pages…"
