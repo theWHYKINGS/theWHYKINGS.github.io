@@ -98,6 +98,10 @@ const media=(await listAll('deploy')).filter(f=>/^deploy\/(assets|uploads)\//.te
 ```
 Compare sizes with the local files, bundle-fetch the differences as `wk_images.json`
 (`{ "assets/…": {content: base64} }`) and run `python3 scripts/unpack_images.py`.
+**Skip these three — the repo is the source of truth:** `assets/logos/favicon-32.png`,
+`favicon-64.png`, `apple-touch-icon.png`. Since 2026-11-12 they are the slim-stroke helm
+(identical geometry to the Academy and CRM icons, recoloured gold); Design still holds an older,
+bolder version, so a size comparison would flag them as "changed" and overwrite them.
 (On 2026-11-11 four unused brand logos existed only in Design — `helm-graphite`,
 `wordmark-black/green/white` — nothing references them, so they were not pulled.)
 
